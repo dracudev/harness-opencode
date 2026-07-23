@@ -41,7 +41,7 @@
   "mcp": {
     "engram": { "command": ["engram", "mcp", "--tools=agent"], "enabled": true, "type": "local" },
     "codegraph": { "command": ["codegraph", "serve", "--mcp"], "enabled": true, "type": "local" },
-    "open-design": { "command": ["node", "/home/dracudev/dev/open-design/apps/daemon/dist/cli.js", "mcp"], "enabled": true, "type": "local" }
+    "open-design": { "command": ["/home/dracudev/.local/bin/od-mcp-wrapper.sh"], "enabled": true, "type": "local" }
   },
   "plugin": [
     "superpowers@git+https://github.com/obra/superpowers.git",
@@ -512,6 +512,7 @@ Directorios y archivos fuera de `.opencode/` que forman parte del harness.
 |---------|-----------|
 | `codegraph` | CLI de Codegraph (indexado, serve, MCP) |
 | `engram` | CLI de Engram (serve, MCP, memoria) |
+| `od-mcp-wrapper.sh` | Wrapper que auto-descubre el puerto del daemon Open Design via sidecar IPC y lanza el MCP |
 | `optimize-images` | Optimizacion de imagenes (compresion, conversion de formato) |
 
 ### ~/.opencode/node_modules/ -- Dependencias del Workspace OAC
@@ -590,7 +591,7 @@ Modo "lazy senior dev" con escalera YAGNI de 7 niveles. Metricas: -54% LOC, -22%
 
 **Integracion con OpenCode**: El daemon de Open Design spawns `opencode-cli run --format json --dangerously-skip-permissions` con el prompt en stdin. Usa todos los modelos, skills, plugins y MCPs configurados en OpenCode. A su vez, el MCP `open-design` permite que OpenCode acceda a los proyectos y artifacts de Open Design.
 
-**Instalacion**: Clonado del repo, compilado con `pnpm`. El MCP se conecta via `node ~/dev/open-design/apps/daemon/dist/cli.js mcp` al daemon en `http://127.0.0.1:7456`. El daemon debe estar corriendo para que el MCP funcione.
+**Instalacion**: Clonado del repo, compilado con `pnpm`. El MCP se conecta via wrapper `od-mcp-wrapper.sh` que usa sidecar IPC (`/tmp/open-design/ipc/default/daemon.sock`) para auto-descubrir el puerto del daemon. Soporta puertos efimeros de `pnpm tools-dev` sin reconfiguracion manual.
 
 ---
 

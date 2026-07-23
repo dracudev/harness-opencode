@@ -4,6 +4,20 @@ Registro de cambios al harness de OpenCode. Cada entrada documenta que se modifi
 
 ---
 
+### 2026-07-23: Open Design MCP -- conexion auto-descubrimiento via sidecar IPC
+
+**Accion**: Corregido el MCP `open-design` para que auto-descubra el puerto del daemon via sidecar IPC en lugar de depender del puerto hardcodeado (7456). El daemon arrancado con `pnpm tools-dev` usa puertos efimeros (ej: 44943), y el MCP fallaba porque esperaba el default 7456.
+
+**Solucion**: Creado un wrapper script (`~/.local/bin/od-mcp-wrapper.sh`) que exporta `OD_SIDECAR_IPC_PATH=/tmp/open-design/ipc/default/daemon.sock` antes de lanzar `node cli.js mcp`. El MCP usa `resolveDaemonUrl()` que, via el socket Unix IPC, consulta al daemon su URL actual (ej: `http://127.0.0.1:44943`). Funciona con cualquier puerto efimero.
+
+**Archivos**:
+- `~/.config/opencode/opencode.jsonc` (MCP `open-design` apunta a `od-mcp-wrapper.sh` en lugar de `node cli.js mcp`)
+- `~/.local/bin/od-mcp-wrapper.sh` (nuevo: 3 lineas, exporta env var + exec MCP)
+- `harness-inventory.md` (secciones 1, 6, 14: config snippet actualizado, descripcion de integracion)
+- `harness-log.md` (esta entrada)
+
+---
+
 ### 2026-07-23: Open Design MCP integrado
 
 **Accion**: Agregado servidor MCP `open-design` a OpenCode. Configurado en `opencode.jsonc` como `command: ["node", "/home/dracudev/dev/open-design/apps/daemon/dist/cli.js", "mcp"]`.

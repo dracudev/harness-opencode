@@ -13,7 +13,7 @@
     },
     "open-design": {
       "type": "local",
-      "command": ["node", "/home/dracudev/dev/open-design/apps/daemon/dist/cli.js", "mcp"],
+      "command": ["/home/dracudev/.local/bin/od-mcp-wrapper.sh"],
       "enabled": true,
     },
   },
