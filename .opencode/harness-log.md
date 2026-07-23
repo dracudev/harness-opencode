@@ -4,7 +4,39 @@ Registro de cambios al harness de OpenCode. Cada entrada documenta que se modifi
 
 ---
 
+### 2026-07-23: Headroom y Graphify: evaluados y descartados
+
+**Headroom** ([headroomlabs-ai/headroom](https://github.com/headroomlabs-ai/headroom), 61.6k estrellas): Compresion de contexto via ML (torch + CUDA). Descartado por 5.8GB de disco para una mediana de compresion real del 4.8% en workloads de codigo. Overhead 52ms por request.
+
+**Graphify** ([Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify), 94.5k estrellas): Knowledge graphs de codigo + docs on-demand via tree-sitter AST. Descartado porque CodeGraph ya cubre navegacion de codigo en vivo (call tracing). Graphify es snapshot arquitectonico -- util para onboardear equipos, no para uso diario de agente.
+
+---
+
+### 2026-07-23: RTK instalado y configurado
+
+**Que**: Instalado `rtk` 0.43.0 via script oficial. Inicializado con `rtk init -g --opencode`.
+**Por que**: Compresion de bash tool outputs sin las desventajas de Headroom (5.8GB, 52ms). RTK: 9.7MB, <10ms, Rust binary, zero deps. Plugin TS nativo OpenCode.
+**Donde**: `~/.local/bin/rtk`, plugin `~/.config/opencode/plugins/rtk.ts`.
+**Modo**: Always-on. Plugin `tool.execute.before` intercepta bash commands y reescribe via `rtk rewrite`. Tee mode guarda output completo en fallos. Cero conflictos con Engram y Ponytail.
+**Archivos**: `~/.local/bin/rtk`, `~/.config/opencode/plugins/rtk.ts`, `harness-inventory.md` (secciones 13, 14), `harness-log.md`.
+
+---
+
 ## 2026-07-23
+
+### Integrado plugin ponytail
+
+**Accion**: Agregado `ponytail` como plugin OpenCode activo. Clonado via git a `~/.config/opencode/ponytail/`, registrado en `opencode.jsonc` como `./ponytail/.opencode/plugins/ponytail.mjs`.
+
+**Que hace**: Inyecta la ruleset "lazy senior dev" en cada sesion automaticamente (nivel `full`). Escalera YAGNI de 7 niveles antes de escribir codigo. Metricas comprobadas: -54% LOC, -22% tokens, -20% costo, -27% tiempo, 100% seguridad.
+
+**Skills incluidos**: ponytail (cambio de nivel), ponytail-review (auditoria de diff), ponytail-audit (auditoria completa), ponytail-debt (tracking shortcuts), ponytail-gain (scoreboard), ponytail-help.
+
+**Descubrimiento**: La reinyeccion en cada turno de ponytail SI es intencional (a diferencia de Engram) -- es refuerzo de comportamiento, no instrucciones procedurales que el modelo no "olvida". No se optimizo.
+
+**Archivos**: `~/.config/opencode/opencode.jsonc`, `~/.config/opencode/ponytail/`, `harness-inventory.md`
+
+---
 
 ### Skills consolidados en `~/.agents/skills/`
 

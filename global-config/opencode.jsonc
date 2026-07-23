@@ -15,5 +15,6 @@
   "plugin": [
     "superpowers@git+https://github.com/obra/superpowers.git",
     "@tarquinen/opencode-dcp@latest",
+    "./ponytail/.opencode/plugins/ponytail.mjs",
   ],
 }

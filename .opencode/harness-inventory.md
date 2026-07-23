@@ -21,6 +21,7 @@
 - [11. Integraciones Externas](#11-integraciones-externas)
 - [12. Estructura Externa del Sistema](#12-estructura-externa-del-sistema)
 - [13. Plugins y Paquetes Cacheados](#13-plugins-y-paquetes-cacheados)
+- [14. Herramientas Externas Evaluadas](#14-herramientas-externas-evaluadas)
 
 ---
 
@@ -172,6 +173,19 @@
 |-------|-----------|-----------|
 | **git-commit** | Conventional commits con staging inteligente y mensajes generados | `~/.agents/skills/git-commit/SKILL.md` |
 | **find-skills** | Descubre e instala nuevos skills | `~/.agents/skills/find-skills/SKILL.md` |
+
+### Code Optimization (Ponytail)
+
+Skills incluidos con el plugin **ponytail** (`~/.config/opencode/ponytail/skills/`), activos via OpenCode:
+
+| Skill | Proposito |
+|-------|-----------|
+| **ponytail** | Cambiar intensidad: lite/full/ultra/off |
+| **ponytail-review** | Revisa el diff actual por over-engineering, sugiere que borrar |
+| **ponytail-audit** | Audita el repo entero por codigo innecesario |
+| **ponytail-debt** | Tracking de shortcuts `ponytail:` diferidos ("later" -> "never" prevention) |
+| **ponytail-gain** | Scoreboard de impacto medido (-54% LOC, -20% costo, -27% tiempo) |
+| **ponytail-help** | Referencia rapida de comandos |
 
 ---
 
@@ -444,6 +458,7 @@ Estructura completa en `.opencode/context/`:
 | **Context7** | API (via skill) | Documentacion actualizada de librerias |
 | **Superpowers** | Plugin (npm git) | Skills de desarrollo avanzados |
 | **DCP** | Plugin (npm) | Dynamic Context Pruning |
+| **Ponytail** | Plugin (local .mjs) | Modo "lazy senior dev" con 7 niveles de escalera YAGNI. Incluye 6 skills de auditoria. |
 
 ---
 
@@ -514,6 +529,54 @@ Directorios y archivos fuera de `.opencode/` que forman parte del harness.
 
 ---
 
+## 14. Herramientas Externas Evaluadas
+
+### Ponytail -- Compresion de Output
+
+- **Repo**: [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) (88k estrellas)
+- **Ubicacion**: `~/.config/opencode/ponytail/`
+- **Activo**: Siempre (plugin en `opencode.jsonc`), nivel `full`
+
+Modo "lazy senior dev" con escalera YAGNI de 7 niveles. Metricas: -54% LOC, -22% tokens, -20% costo. Incluye 6 skills: ponytail, ponytail-review, ponytail-audit, ponytail-debt, ponytail-gain, ponytail-help.
+
+### RTK -- Rust Token Killer
+
+- **Repo**: [rtk-ai/rtk](https://github.com/rtk-ai/rtk) (72.8k estrellas)
+- **Version instalada**: 0.43.0 (via script oficial)
+- **Ubicacion**: `~/.local/bin/rtk` (9.7 MB), plugin `~/.config/opencode/plugins/rtk.ts`
+- **Activo**: Siempre (plugin en `opencode.jsonc`)
+
+**Que hace**: Proxy CLI que intercepta bash commands y comprime el output antes de llegar al LLM. Binario Rust unico, zero dependencias externas, <10ms overhead. 100+ comandos soportados con filtros especificos: git, cargo, npm, pytest, docker, kubectl, AWS, etc.
+
+**Estrategia por comando**: Smart filtering (ruido), grouping (agregacion), truncation (contexto relevante), deduplication (logs repetidos). No es compresion ML generica -- cada comando tiene filtros especificos que entienden su formato de output.
+
+**Metricas (reduccion de output bash)**:
+
+| Comando | Ahorro |
+|---|---|
+| `ls -la` | ~75% |
+| `git push/pull` | ~93% |
+| `cargo test` / `pytest` | ~90% |
+| `cargo build` | ~80% |
+| `docker ps` / `kubectl` | ~85% |
+
+**Tee mode**: Si un comando falla, RTK guarda el output completo en `~/.local/share/rtk/tee/` para que el LLM pueda leerlo sin re-ejecutar.
+
+**Integracion OpenCode**: Plugin TS nativo (`rtk init -g --opencode`). Hook `tool.execute.before` que intercepta bash/shell commands y los reescribe via `rtk rewrite`. El agente ni se entera. Cero conflicto con Engram (`tool.execute.after`) ni Ponytail (`chat.system.transform`).
+
+**Por que always-on**: 9.7 MB, <10ms, zero deps, sin peso en system prompt, sin friccion para el usuario. Es lo opuesto a Headroom.
+
+**Complementariedad**:
+
+| Herramienta | Que comprime | Capa |
+|---|---|---|
+| RTK | INPUT (bash tool outputs) | Plugin `tool.execute.before` |
+| Ponytail | OUTPUT (codigo generado) | System prompt |
+| Caveman | OUTPUT (prosa) | System prompt |
+| Engram | Memoria cross-sesion | Plugin `tool.execute.after` |
+
+---
+
 ## 13. Plugins y Paquetes Cacheados
 
 ### Plugins Activos (declarados en `opencode.jsonc`)
@@ -523,6 +586,8 @@ Directorios y archivos fuera de `.opencode/` que forman parte del harness.
 | **superpowers** | `git+https://github.com/obra/superpowers.git` | 10 skills de desarrollo avanzados |
 | **opencode-dcp** | `@tarquinen/opencode-dcp@latest` | Dynamic Context Pruning |
 | **engram** | `~/.config/opencode/plugins/engram.ts` | Adaptador de memoria persistente |
+| **ponytail** | `./ponytail/.opencode/plugins/ponytail.mjs` | Modo "lazy senior dev": reduce codigo generado (-54% LOC, -20% costo) via escalera YAGNI. Siempre activo, niveles: lite/full/ultra/off. Incluye 6 skills de auditoria. |
+| **rtk** | `~/.config/opencode/plugins/rtk.ts` | Intercepta bash commands y comprime output antes del LLM. 100+ comandos soportados, <10ms overhead. |
 
 ### Paquetes Cacheados (~/.cache/opencode/packages/)
 
