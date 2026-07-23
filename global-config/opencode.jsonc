@@ -11,7 +11,13 @@
       "command": ["codegraph", "serve", "--mcp"],
       "enabled": true,
     },
+    "open-design": {
+      "type": "local",
+      "command": ["node", "/home/dracudev/dev/open-design/apps/daemon/dist/cli.js", "mcp"],
+      "enabled": true,
+    },
   },
+  "instructions": ["AGENTS.md"],
   "plugin": [
     "superpowers@git+https://github.com/obra/superpowers.git",
     "@tarquinen/opencode-dcp@latest",

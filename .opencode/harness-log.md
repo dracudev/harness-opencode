@@ -4,6 +4,18 @@ Registro de cambios al harness de OpenCode. Cada entrada documenta que se modifi
 
 ---
 
+### 2026-07-23: Open Design MCP integrado
+
+**Accion**: Agregado servidor MCP `open-design` a OpenCode. Configurado en `opencode.jsonc` como `command: ["node", "/home/dracudev/dev/open-design/apps/daemon/dist/cli.js", "mcp"]`.
+
+**Que hace**: Puente entre OpenCode y el daemon de Open Design. Expone tools MCP para listar proyectos y leer artifacts generados desde Open Design. Permite que OpenCode acceda directamente a los disenos/prototipos creados en Open Design sin exportacion manual.
+
+**Flujo**: Open Design (daemon en `:7456`) usa OpenCode como motor de generacion de diseno. El MCP permite la direccion inversa: OpenCode puede leer artifacts de Open Design para implementarlos como codigo real.
+
+**Archivos**: `~/.config/opencode/opencode.jsonc`, `harness-inventory.md` (secciones 6, 10, 11, 14), `harness-log.md`.
+
+---
+
 ### 2026-07-23: Headroom y Graphify: evaluados y descartados
 
 **Headroom** ([headroomlabs-ai/headroom](https://github.com/headroomlabs-ai/headroom), 61.6k estrellas): Compresion de contexto via ML (torch + CUDA). Descartado por 5.8GB de disco para una mediana de compresion real del 4.8% en workloads de codigo. Overhead 52ms por request.

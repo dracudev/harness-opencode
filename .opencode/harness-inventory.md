@@ -40,7 +40,8 @@
   "$schema": "https://opencode.ai/config.json",
   "mcp": {
     "engram": { "command": ["engram", "mcp", "--tools=agent"], "enabled": true, "type": "local" },
-    "codegraph": { "command": ["codegraph", "serve", "--mcp"], "enabled": true, "type": "local" }
+    "codegraph": { "command": ["codegraph", "serve", "--mcp"], "enabled": true, "type": "local" },
+    "open-design": { "command": ["node", "/home/dracudev/dev/open-design/apps/daemon/dist/cli.js", "mcp"], "enabled": true, "type": "local" }
   },
   "plugin": [
     "superpowers@git+https://github.com/obra/superpowers.git",
@@ -218,6 +219,7 @@ Skills incluidos con el plugin **ponytail** (`~/.config/opencode/ponytail/skills
 |----------|------|-----------|
 | **engram** | local | Memoria persistente via `engram mcp --tools=agent` |
 | **codegraph** | local | Comprension estructural del codigo via `codegraph serve --mcp` |
+| **open-design** | local | Open Design MCP: puente entre OpenCode y el daemon de Open Design. Expone tools para listar proyectos y leer artifacts generados |
 
 ### Herramientas Integradas
 
@@ -438,7 +440,7 @@ Estructura completa en `.opencode/context/`:
 | Subagentes (solo metadata) | 15 |
 | Skills (activos) | 25 |
 | Skills (deshabilitados) | 5 |
-| Servidores MCP | 2 |
+| Servidores MCP | 3 |
 | Plugins | 4 (3 activos + 1 cacheado) |
 | Comandos personalizados | 8+ |
 | Herramientas personalizadas | 1 |
@@ -457,7 +459,7 @@ Estructura completa en `.opencode/context/`:
 | **Codegraph** | MCP (local) | Comprension de codigo |
 | **Context7** | API (via skill) | Documentacion actualizada de librerias |
 | **Superpowers** | Plugin (npm git) | Skills de desarrollo avanzados |
-| **DCP** | Plugin (npm) | Dynamic Context Pruning |
+| **Open Design** | MCP (local) + CLI | Diseno visual open-source: genera prototipos, dashboards, decks, imagenes. OpenCode como motor de generacion |
 | **Ponytail** | Plugin (local .mjs) | Modo "lazy senior dev" con 7 niveles de escalera YAGNI. Incluye 6 skills de auditoria. |
 
 ---
@@ -574,6 +576,21 @@ Modo "lazy senior dev" con escalera YAGNI de 7 niveles. Metricas: -54% LOC, -22%
 | Ponytail | OUTPUT (codigo generado) | System prompt |
 | Caveman | OUTPUT (prosa) | System prompt |
 | Engram | Memoria cross-sesion | Plugin `tool.execute.after` |
+
+---
+
+### Open Design -- Diseno visual open-source
+
+- **Repo**: [nexu-io/open-design](https://github.com/nexu-io/open-design) (81k estrellas)
+- **Version instalada**: 0.7.0 (clon local en `~/dev/open-design/`)
+- **Ubicacion**: `~/dev/open-design/apps/daemon/dist/cli.js`, MCP: `opencode.jsonc`
+- **Activo**: MCP en OpenCode, daemon via terminal (`opendesign`)
+
+**Que hace**: Alternativa open-source a Claude Design. App de escritorio local-first que usa cualquier agente CLI (OpenCode, Claude Code, Codex, etc.) como motor de diseno. Genera prototipos HTML/CSS, dashboards, decks, imagenes y video. 151 design systems, 100+ skills funcionales, 277 plugins. Exporta a HTML, PDF, PPTX, MP4.
+
+**Integracion con OpenCode**: El daemon de Open Design spawns `opencode-cli run --format json --dangerously-skip-permissions` con el prompt en stdin. Usa todos los modelos, skills, plugins y MCPs configurados en OpenCode. A su vez, el MCP `open-design` permite que OpenCode acceda a los proyectos y artifacts de Open Design.
+
+**Instalacion**: Clonado del repo, compilado con `pnpm`. El MCP se conecta via `node ~/dev/open-design/apps/daemon/dist/cli.js mcp` al daemon en `http://127.0.0.1:7456`. El daemon debe estar corriendo para que el MCP funcione.
 
 ---
 
