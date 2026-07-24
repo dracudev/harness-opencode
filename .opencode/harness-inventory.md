@@ -40,8 +40,7 @@
   "$schema": "https://opencode.ai/config.json",
   "mcp": {
     "engram": { "command": ["engram", "mcp", "--tools=agent"], "enabled": true, "type": "local" },
-    "codegraph": { "command": ["codegraph", "serve", "--mcp"], "enabled": true, "type": "local" },
-    "open-design": { "command": ["/home/dracudev/.local/bin/od-mcp-wrapper.sh"], "enabled": true, "type": "local" }
+    "codegraph": { "command": ["codegraph", "serve", "--mcp"], "enabled": true, "type": "local" }
   },
   "plugin": [
     "superpowers@git+https://github.com/obra/superpowers.git",
@@ -144,8 +143,8 @@
 
 | Skill | Proposito | Ubicacion |
 |-------|-----------|-----------|
-| **frontend-design** | Interfaces frontend produccion-grade con alta calidad de diseno; anti-generico | `~/.agents/skills/frontend-design/SKILL.md` |
-| **design-taste-frontend** | Anti-slop: landing pages, portfolios, redesigns con direccion de diseno real | `~/.agents/skills/design-taste-frontend/SKILL.md` |
+| **impeccable** | Design guidance con 23 comandos, 58 reglas detectoras anti-AI-slop, iteracion en vivo, y CLI independiente (`npx impeccable detect`). Fork evolucionado de frontend-design. | `~/.opencode/skills/impeccable/SKILL.md` |
+| **design-taste-frontend** | Anti-slop: landing pages, portfolios, redesigns con direccion de diseno real y reglas duras (dials, GSAP skeletons, arquitectura) | `~/.agents/skills/design-taste-frontend/SKILL.md` |
 | **extract-design-system** | Extrae primitivas de diseno de sitios publicos hacia token files | `~/.agents/skills/extract-design-system/SKILL.md` |
 | **caveman** | Modo de comunicacion ultra-comprimido (~75% menos tokens) | `~/.agents/skills/caveman/SKILL.md` |
 | **humanizer** | Remueve senales de escritura AI del texto (invocacion manual) | `~/.agents/skills/humanizer/SKILL.md` |
@@ -219,7 +218,6 @@ Skills incluidos con el plugin **ponytail** (`~/.config/opencode/ponytail/skills
 |----------|------|-----------|
 | **engram** | local | Memoria persistente via `engram mcp --tools=agent` |
 | **codegraph** | local | Comprension estructural del codigo via `codegraph serve --mcp` |
-| **open-design** | local | Open Design MCP: puente entre OpenCode y el daemon de Open Design. Expone tools para listar proyectos y leer artifacts generados |
 
 ### Herramientas Integradas
 
@@ -440,7 +438,7 @@ Estructura completa en `.opencode/context/`:
 | Subagentes (solo metadata) | 15 |
 | Skills (activos) | 25 |
 | Skills (deshabilitados) | 5 |
-| Servidores MCP | 3 |
+| Servidores MCP | 2 |
 | Plugins | 4 (3 activos + 1 cacheado) |
 | Comandos personalizados | 8+ |
 | Herramientas personalizadas | 1 |
@@ -459,7 +457,7 @@ Estructura completa en `.opencode/context/`:
 | **Codegraph** | MCP (local) | Comprension de codigo |
 | **Context7** | API (via skill) | Documentacion actualizada de librerias |
 | **Superpowers** | Plugin (npm git) | Skills de desarrollo avanzados |
-| **Open Design** | MCP (local) + CLI | Diseno visual open-source: genera prototipos, dashboards, decks, imagenes. OpenCode como motor de generacion |
+| **DCP** | Plugin (npm) | Dynamic Context Pruning |
 | **Ponytail** | Plugin (local .mjs) | Modo "lazy senior dev" con 7 niveles de escalera YAGNI. Incluye 6 skills de auditoria. |
 
 ---
@@ -512,7 +510,6 @@ Directorios y archivos fuera de `.opencode/` que forman parte del harness.
 |---------|-----------|
 | `codegraph` | CLI de Codegraph (indexado, serve, MCP) |
 | `engram` | CLI de Engram (serve, MCP, memoria) |
-| `od-mcp-wrapper.sh` | Wrapper que auto-descubre el puerto del daemon Open Design via sidecar IPC y lanza el MCP |
 | `optimize-images` | Optimizacion de imagenes (compresion, conversion de formato) |
 
 ### ~/.opencode/node_modules/ -- Dependencias del Workspace OAC
@@ -578,20 +575,29 @@ Modo "lazy senior dev" con escalera YAGNI de 7 niveles. Metricas: -54% LOC, -22%
 | Caveman | OUTPUT (prosa) | System prompt |
 | Engram | Memoria cross-sesion | Plugin `tool.execute.after` |
 
----
+### Impeccable -- Detector de AI-Slop y Skill de Diseno
 
-### Open Design -- Diseno visual open-source
+- **Repo**: [pbakaus/impeccable](https://github.com/pbakaus/impeccable) (49.6k estrellas)
+- **Version instalada**: 3.3.1 (npm global + skill OpenCode)
+- **Ubicacion**: skill `~/.opencode/skills/impeccable/`, CLI `~/.nvm/versions/node/v24.11.0/bin/impeccable`
+- **Activo**: Skill bajo demanda (`/impeccable`), CLI manual (`npx impeccable detect`)
 
-- **Repo**: [nexu-io/open-design](https://github.com/nexu-io/open-design) (81k estrellas)
-- **Version instalada**: 0.7.0 (clon local en `~/dev/open-design/`)
-- **Ubicacion**: `~/dev/open-design/apps/daemon/dist/cli.js`, MCP: `opencode.jsonc`
-- **Activo**: MCP en OpenCode, daemon via terminal (`opendesign`)
+**Que hace**: 
+- **Skill**: 23 comandos de diseno (polish, critique, audit, distill, animate, etc.), modos (Persuade, Operate, Read, Experience), contexto persistente (PRODUCT.md + DESIGN.md), iteracion en vivo en navegador. Fork evolucionado de `frontend-design`.
+- **CLI detector**: 58 reglas deterministas que escanean HTML/CSS y detectan anti-patrones de diseno AI (Inter font, purple gradients, cards anidadas, bounce easing, etc.) sin consumir tokens de LLM.
 
-**Que hace**: Alternativa open-source a Claude Design. App de escritorio local-first que usa cualquier agente CLI (OpenCode, Claude Code, Codex, etc.) como motor de diseno. Genera prototipos HTML/CSS, dashboards, decks, imagenes y video. 151 design systems, 100+ skills funcionales, 277 plugins. Exporta a HTML, PDF, PPTX, MP4.
+**Deteccion (CLI)**:
+```bash
+npx impeccable detect src/      # escanea directorio
+npx impeccable detect --json .  # CI-friendly
+npx impeccable ignores list     # gestion de waivers
+```
 
-**Integracion con OpenCode**: El daemon de Open Design spawns `opencode-cli run --format json --dangerously-skip-permissions` con el prompt en stdin. Usa todos los modelos, skills, plugins y MCPs configurados en OpenCode. A su vez, el MCP `open-design` permite que OpenCode acceda a los proyectos y artifacts de Open Design.
+**Por que reemplaza a frontend-design**: `frontend-design` (42 lineas) era una directriz simple de "se creativo, evita Inter". Impeccable es su evolucion: comandos granulares, contexto persistente entre sesiones, y un CLI detector determinista que no existia.
 
-**Instalacion**: Clonado del repo, compilado con `pnpm`. El MCP se conecta via wrapper `od-mcp-wrapper.sh` que usa sidecar IPC (`/tmp/open-design/ipc/default/daemon.sock`) para auto-descubrir el puerto del daemon. Soporta puertos efimeros de `pnpm tools-dev` sin reconfiguracion manual.
+**Complementariedad con design-taste-frontend**: No se solapan. `design-taste-frontend` aporta reglas duras (dials VARIANCE/MOTION/DENSITY, GSAP skeletons, arquitectura RSC, mapeo a design systems reales). Impeccable aporta proceso (comandos, modos, live iteration) y deteccion (CLI determinista).
+
+**Design hook**: No aplica a OpenCode (solo Claude Code, Cursor, Codex, Grok). La deteccion se usa via CLI manual.
 
 ---
 

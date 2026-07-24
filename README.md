@@ -17,7 +17,7 @@ harness-opencode/
 │   │       ├── workflows/        # code-review, task-delegation, openspec
 │   │       └── system/           # Configuracion del sistema
 │   ├── skills/                   # Skills locales
-│   │   ├── task-management/      # Gestion de tareas y subtareas
+│   │   ├── impeccable/           # Design guidance con 23 comandos y detector CLI anti-AI-slop
 │   │   └── context7/             # Documentacion de librerias externas
 │   ├── command/                  # Comandos de OpenCode
 │   ├── harness-inventory.md      # Inventario completo del harness
@@ -29,9 +29,8 @@ harness-opencode/
 │   ├── tui.json                  # TUI config (subagent-statusline)
 │   └── plugins/
 │       └── engram.ts             # Plugin de memoria persistente (optimizado)
-└── global-skills/                # 18 skills globales externos
+└── global-skills/                # 17 skills globales externos
     ├── odoo-19/                  # Odoo 19 con 18 guias especializadas
-    ├── frontend-design/          # Interfaces frontend de alta calidad
     ├── design-taste-frontend/    # Landing pages y portfolios (anti-slop)
     ├── caveman/                  # Comunicacion ultra-comprimida
     ├── humanizer/                # Eliminacion de marcas de IA en texto

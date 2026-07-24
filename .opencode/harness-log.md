@@ -1,32 +1,28 @@
-# Harness Log
+### 2026-07-24: Reemplazado frontend-design por impeccable
 
-Registro de cambios al harness de OpenCode. Cada entrada documenta que se modifico, por que, y que archivos se afectaron.
+**Accion**: Eliminado `frontend-design` (42 lineas, Anthropic skill) y reemplazado por `impeccable` 3.3.1 (skill + CLI). Instalado via `npx impeccable install --providers=opencode --scope=global` y `npm i -g impeccable`.
 
----
+**Por que**: 
+- `frontend-design` era una directriz simple de 42 lineas ("se creativo, evita Inter"). Impeccable es su evolucion directa: 23 comandos, modos (Persuade/Operate/Read/Experience), contexto persistente (PRODUCT.md + DESIGN.md).
+- El CLI detector (`npx impeccable detect`) aporta 58 reglas deterministas que detectan AI-slop en HTML/CSS SIN consumir tokens de LLM. Ninguna skill existente tenia esta capacidad.
+- `design-taste-frontend` se mantiene: no se solapan. design-taste-frontend = reglas duras + arquitectura + GSAP skeletons. impeccable = proceso + deteccion.
 
-### 2026-07-23: Open Design MCP -- conexion auto-descubrimiento via sidecar IPC
+**Skills de diseno post-cambio**: 2 skills complementarios — `impeccable` (proceso + deteccion) + `design-taste-frontend` (reglas + arquitectura).
 
-**Accion**: Corregido el MCP `open-design` para que auto-descubra el puerto del daemon via sidecar IPC en lugar de depender del puerto hardcodeado (7456). El daemon arrancado con `pnpm tools-dev` usa puertos efimeros (ej: 44943), y el MCP fallaba porque esperaba el default 7456.
-
-**Solucion**: Creado un wrapper script (`~/.local/bin/od-mcp-wrapper.sh`) que exporta `OD_SIDECAR_IPC_PATH=/tmp/open-design/ipc/default/daemon.sock` antes de lanzar `node cli.js mcp`. El MCP usa `resolveDaemonUrl()` que, via el socket Unix IPC, consulta al daemon su URL actual (ej: `http://127.0.0.1:44943`). Funciona con cualquier puerto efimero.
-
-**Archivos**:
-- `~/.config/opencode/opencode.jsonc` (MCP `open-design` apunta a `od-mcp-wrapper.sh` en lugar de `node cli.js mcp`)
-- `~/.local/bin/od-mcp-wrapper.sh` (nuevo: 3 lineas, exporta env var + exec MCP)
-- `harness-inventory.md` (secciones 1, 6, 14: config snippet actualizado, descripcion de integracion)
+**Archivos**: 
+- `~/.agents/skills/frontend-design/` (eliminado)
+- `~/.opencode/skills/impeccable/` (nuevo skill)
+- `~/.nvm/versions/node/v24.11.0/bin/impeccable` (CLI global)
+- `harness-opencode/global-skills/frontend-design/` (eliminado del repo)
+- `harness-opencode/.opencode/skills/impeccable/` (agregado al repo)
+- `harness-inventory.md` (secciones 5 y 14)
 - `harness-log.md` (esta entrada)
 
 ---
 
-### 2026-07-23: Open Design MCP integrado
+# Harness Log
 
-**Accion**: Agregado servidor MCP `open-design` a OpenCode. Configurado en `opencode.jsonc` como `command: ["node", "/home/dracudev/dev/open-design/apps/daemon/dist/cli.js", "mcp"]`.
-
-**Que hace**: Puente entre OpenCode y el daemon de Open Design. Expone tools MCP para listar proyectos y leer artifacts generados desde Open Design. Permite que OpenCode acceda directamente a los disenos/prototipos creados en Open Design sin exportacion manual.
-
-**Flujo**: Open Design (daemon en `:7456`) usa OpenCode como motor de generacion de diseno. El MCP permite la direccion inversa: OpenCode puede leer artifacts de Open Design para implementarlos como codigo real.
-
-**Archivos**: `~/.config/opencode/opencode.jsonc`, `harness-inventory.md` (secciones 6, 10, 11, 14), `harness-log.md`.
+Registro de cambios al harness de OpenCode. Cada entrada documenta que se modifico, por que, y que archivos se afectaron.
 
 ---
 
