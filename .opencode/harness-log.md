@@ -1,13 +1,32 @@
+### 2026-07-25: Añadido pols-slop como capa preventiva de diseño
+
+**Acción**: Instalado `pols-slop` (https://pols.dev/slop.md) como skill auto-cargado. Añadida regla en `AGENTS.md` para cargarlo automáticamente en cualquier tarea de frontend.
+
+**Por qué**: A diferencia de impeccable (que requiere invocación manual), pols-slop previene slop antes de que se genere. ~100 patrones documentados: fonts, colores, layouts, composición, sombras, animaciones. Más exhaustivo que los 58 detectores de impeccable en reglas preventivas.
+
+**Stack de diseño final**: 3 capas complementarias:
+1. `pols-slop` (🔁 auto) — prevención: nunca generes slop
+2. `impeccable` (📋 bajo demanda) — construcción: shape, polish, critique, live
+3. `design-taste-frontend` (📋 manual) — arquitectura: dials, GSAP skeletons, RSC
+
+**Archivos**:
+- `~/.agents/skills/pols-slop/SKILL.md` (87 KB, 1599 líneas)
+- `~/.config/opencode/AGENTS.md` (actualizado: regla auto-load + regla ortografía español)
+- `~/.opencode/harness-inventory.md` (actualizado)
+- `~/harness-opencode/global-config/AGENTS.md` (nuevo en repo)
+
+---
+
 ### 2026-07-24: Reemplazado frontend-design por impeccable
 
-**Accion**: Eliminado `frontend-design` (42 lineas, Anthropic skill) y reemplazado por `impeccable` 3.3.1 (skill + CLI). Instalado via `npx impeccable install --providers=opencode --scope=global` y `npm i -g impeccable`.
+**Acción**: Eliminado `frontend-design` (42 líneas, Anthropic skill) y reemplazado por `impeccable` 3.3.1 (skill + CLI). Instalado via `npx impeccable install --providers=opencode --scope=global` y `npm i -g impeccable`.
 
-**Por que**: 
-- `frontend-design` era una directriz simple de 42 lineas ("se creativo, evita Inter"). Impeccable es su evolucion directa: 23 comandos, modos (Persuade/Operate/Read/Experience), contexto persistente (PRODUCT.md + DESIGN.md).
+**Por qué**: 
+- `frontend-design` era una directriz simple de 42 líneas ("se creativo, evita Inter"). Impeccable es su evolución directa: 23 comandos, modos (Persuade/Operate/Read/Experience), contexto persistente (PRODUCT.md + DESIGN.md).
 - El CLI detector (`npx impeccable detect`) aporta 58 reglas deterministas que detectan AI-slop en HTML/CSS SIN consumir tokens de LLM. Ninguna skill existente tenia esta capacidad.
-- `design-taste-frontend` se mantiene: no se solapan. design-taste-frontend = reglas duras + arquitectura + GSAP skeletons. impeccable = proceso + deteccion.
+- `design-taste-frontend` se mantiene: no se solapan. design-taste-frontend = reglas duras + arquitectura + GSAP skeletons. impeccable = proceso + detección.
 
-**Skills de diseno post-cambio**: 2 skills complementarios — `impeccable` (proceso + deteccion) + `design-taste-frontend` (reglas + arquitectura).
+**Skills de diseño post-cambio**: 2 skills complementarios — `impeccable` (proceso + detección) + `design-taste-frontend` (reglas + arquitectura).
 
 **Archivos**: 
 - `~/.agents/skills/frontend-design/` (eliminado)
@@ -28,17 +47,17 @@ Registro de cambios al harness de OpenCode. Cada entrada documenta que se modifi
 
 ### 2026-07-23: Headroom y Graphify: evaluados y descartados
 
-**Headroom** ([headroomlabs-ai/headroom](https://github.com/headroomlabs-ai/headroom), 61.6k estrellas): Compresion de contexto via ML (torch + CUDA). Descartado por 5.8GB de disco para una mediana de compresion real del 4.8% en workloads de codigo. Overhead 52ms por request.
+**Headroom** ([headroomlabs-ai/headroom](https://github.com/headroomlabs-ai/headroom), 61.6k estrellas): Compresión de contexto via ML (torch + CUDA). Descartado por 5.8GB de disco para una mediana de compresión real del 4.8% en workloads de código. Overhead 52ms por request.
 
-**Graphify** ([Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify), 94.5k estrellas): Knowledge graphs de codigo + docs on-demand via tree-sitter AST. Descartado porque CodeGraph ya cubre navegacion de codigo en vivo (call tracing). Graphify es snapshot arquitectonico -- util para onboardear equipos, no para uso diario de agente.
+**Graphify** ([Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify), 94.5k estrellas): Knowledge graphs de código + docs on-demand via tree-sitter AST. Descartado porque CodeGraph ya cubre navegacion de código en vivo (call tracing). Graphify es snapshot arquitectonico -- útil para onboardear equipos, no para uso diario de agente.
 
 ---
 
 ### 2026-07-23: RTK instalado y configurado
 
 **Que**: Instalado `rtk` 0.43.0 via script oficial. Inicializado con `rtk init -g --opencode`.
-**Por que**: Compresion de bash tool outputs sin las desventajas de Headroom (5.8GB, 52ms). RTK: 9.7MB, <10ms, Rust binary, zero deps. Plugin TS nativo OpenCode.
-**Donde**: `~/.local/bin/rtk`, plugin `~/.config/opencode/plugins/rtk.ts`.
+**Por qué**: Compresión de bash tool outputs sin las desventajas de Headroom (5.8GB, 52ms). RTK: 9.7MB, <10ms, Rust binary, zero deps. Plugin TS nativo OpenCode.
+**Dónde**: `~/.local/bin/rtk`, plugin `~/.config/opencode/plugins/rtk.ts`.
 **Modo**: Always-on. Plugin `tool.execute.before` intercepta bash commands y reescribe via `rtk rewrite`. Tee mode guarda output completo en fallos. Cero conflictos con Engram y Ponytail.
 **Archivos**: `~/.local/bin/rtk`, `~/.config/opencode/plugins/rtk.ts`, `harness-inventory.md` (secciones 13, 14), `harness-log.md`.
 
@@ -48,9 +67,9 @@ Registro de cambios al harness de OpenCode. Cada entrada documenta que se modifi
 
 ### Integrado plugin ponytail
 
-**Accion**: Agregado `ponytail` como plugin OpenCode activo. Clonado via git a `~/.config/opencode/ponytail/`, registrado en `opencode.jsonc` como `./ponytail/.opencode/plugins/ponytail.mjs`.
+**Acción**: Agregado `ponytail` como plugin OpenCode activo. Clonado via git a `~/.config/opencode/ponytail/`, registrado en `opencode.jsonc` como `./ponytail/.opencode/plugins/ponytail.mjs`.
 
-**Que hace**: Inyecta la ruleset "lazy senior dev" en cada sesion automaticamente (nivel `full`). Escalera YAGNI de 7 niveles antes de escribir codigo. Metricas comprobadas: -54% LOC, -22% tokens, -20% costo, -27% tiempo, 100% seguridad.
+**Qué hace**: Inyecta la ruleset "lazy senior dev" en cada sesion automáticamente (nivel `full`). Escalera YAGNI de 7 niveles antes de escribir código. Metricas comprobadas: -54% LOC, -22% tokens, -20% costo, -27% tiempo, 100% seguridad.
 
 **Skills incluidos**: ponytail (cambio de nivel), ponytail-review (auditoria de diff), ponytail-audit (auditoria completa), ponytail-debt (tracking shortcuts), ponytail-gain (scoreboard), ponytail-help.
 
@@ -62,9 +81,9 @@ Registro de cambios al harness de OpenCode. Cada entrada documenta que se modifi
 
 ### Skills consolidados en `~/.agents/skills/`
 
-**Accion**: Movidos `frontend-design`, `caveman` y `humanizer` desde `~/.claude/skills/` a `~/.agents/skills/`. Directorio `~/.claude/skills/` eliminado.
+**Acción**: Movidos `frontend-design`, `caveman` y `humanizer` desde `~/.claude/skills/` a `~/.agents/skills/`. Directorio `~/.claude/skills/` eliminado.
 
-**Motivo**: Skills estaban dispersos en 3 ubicaciones. OpenCode escanea todas automaticamente, pero tener un solo directorio global facilita mantenimiento. El usuario no usa Claude.
+**Motivo**: Skills estaban dispersos en 3 ubicaciónes. OpenCode escanea todas automáticamente, pero tener un solo directorio global facilita mantenimiento. El usuario no usa Claude.
 
 **Archivos**:
 - `~/.agents/skills/frontend-design/SKILL.md` (movido)
@@ -76,9 +95,9 @@ Registro de cambios al harness de OpenCode. Cada entrada documenta que se modifi
 
 ### Eliminado `odoo-development`
 
-**Accion**: Eliminado `~/.agents/skills/odoo-development/` (153 lineas).
+**Acción**: Eliminado `~/.agents/skills/odoo-development/` (153 líneas).
 
-**Motivo**: Skill obsoleto. Usa `@api.multi` (deprecado desde Odoo 13). Contenido generico sin referencias concretas. Redundante frente a `odoo-19` que tiene 18 guias especializadas version-especificas.
+**Motivo**: Skill obsoleto. Usa `@api.multi` (deprecado desde Odoo 13). Contenido genérico sin referencias concretas. Redundante frente a `odoo-19` que tiene 18 guías especializadas versión-específicas.
 
 **Archivos**:
 - `~/.agents/skills/odoo-development/SKILL.md` (eliminado)
@@ -87,9 +106,9 @@ Registro de cambios al harness de OpenCode. Cada entrada documenta que se modifi
 
 ### Optimizado plugin Engram: inyeccion de instrucciones una vez por sesion
 
-**Accion**: Modificado `~/.config/opencode/plugins/engram.ts` para que las instrucciones de memoria (~120 lineas) se inyecten en el system prompt solo UNA vez por sesion, en lugar de cada mensaje.
+**Acción**: Modificado `~/.config/opencode/plugins/engram.ts` para que las instrucciones de memoria (~120 líneas) se inyecten en el system prompt solo UNA vez por sesion, en lugar de cada mensaje.
 
-**Motivo**: El hook `experimental.chat.system.transform` se ejecutaba en cada turno de chat, duplicando ~120 lineas de instrucciones. Como el system prompt persiste entre turnos, la reinyeccion era innecesaria. En sesiones de 5+ turnos, esto representaba ~15-20% del context window.
+**Motivo**: El hook `experimental.chat.system.transform` se ejecutaba en cada turno de chat, duplicando ~120 líneas de instrucciones. Como el system prompt persiste entre turnos, la reinyeccion era innecesaria. En sesiones de 5+ turnos, esto representaba ~15-20% del context window.
 
 **Cambios en `engram.ts`** (3 ediciones):
 1. Agregado flag `memoryInstructionsInjected = false` a nivel de modulo
@@ -102,11 +121,11 @@ Registro de cambios al harness de OpenCode. Cada entrada documenta que se modifi
 
 ### Documentada estructura externa del harness
 
-**Accion**: Agregadas secciones 12 y 13 a `harness-inventory.md` documentando componentes fuera de `.opencode/`.
+**Acción**: Agregadas secciones 12 y 13 a `harness-inventory.md` documentando componentes fuera de `.opencode/`.
 
 **Directorios documentados**:
 - `~/.local/share/opencode/` (opencode.db, storage, tool-output, logs, snapshots)
-- `~/.codegraph/current/` (instalacion codegraph v0.9.8)
+- `~/.codegraph/current/` (instalación codegraph v0.9.8)
 - `~/.engram/` (SQLite de memoria)
 - `~/.cache/opencode/packages/` (plugins cacheados)
 - `~/.opencode/node_modules/` (dependencias del workspace OAC)
@@ -119,18 +138,18 @@ Registro de cambios al harness de OpenCode. Cada entrada documenta que se modifi
 
 ### Modificado OpenAgent: eliminado `question: "allow"`
 
-**Accion**: Removida la linea `question: "allow"` del frontmatter de permisos en OpenAgent.
+**Acción**: Removida la línea `question: "allow"` del frontmatter de permisos en OpenAgent.
 
-**Motivo**: El upstream (OpenAgentsControl) incluye `question: "allow"` en los permisos. La version local lo omite. No hay `question` tool en el runtime actual de OpenCode, por lo que este permiso es irrelevante.
+**Motivo**: El upstream (OpenAgentsControl) incluye `question: "allow"` en los permisos. La versión local lo omite. No hay `question` tool en el runtime actual de OpenCode, por lo que este permiso es irrelevante.
 
 **Archivos**:
-- `.opencode/agent/core/openagent.md` (lineas 6-18 de frontmatter)
+- `.opencode/agent/core/openagent.md` (líneas 6-18 de frontmatter)
 
 ---
 
 ### Modificado OpenCoder: 7 personalizaciones mayores sobre upstream
 
-**Accion**: OpenCoder local diverge significativamente del upstream (OpenAgentsControl). El upstream tiene un workflow de 6 etapas (Discover->Propose->InitSession->Plan->Execute->ValidateAndHandoff). La version local agrega 7 bloques:
+**Acción**: OpenCoder local diverge significativamente del upstream (OpenAgentsControl). El upstream tiene un workflow de 6 etapas (Discover->Propose->InitSession->Plan->Execute->ValidateAndHandoff). La versión local agrega 7 bloques:
 
 **Cambios (por orden en el archivo)**:
 
@@ -144,52 +163,52 @@ Registro de cambios al harness de OpenCode. Cada entrada documenta que se modifi
    - **Stage 5 (Plan)**: `**OpenSpec Integration (MANDATORY)**` -- checkea/crea/actualiza spec antes de planificar
    - **Stage 7 (ValidateAndHandoff)**: `**OpenSpec Update** (MANDATORY)` -- actualiza spec con implementacion final
 
-3. **`<user_rules>` block** (lineas 569-583): No existe en upstream.
-   - `language_split`: openspec/espanol, sesiones/ingles, codigo/ingles
+3. **`<user_rules>` block** (líneas 569-583): No existe en upstream.
+   - `language_split`: openspec/espanol, sesiones/inglés, código/inglés
    - `no_automatic_commits`: nunca git commit/add/push sin trigger explicito
 
-4. **Propuestas en espanol**: `"**Esperando tu aprobacion antes de continuar.**"` y `"**Aprobas esta especificacion...**"`. Upstream usa ingles.
+4. **Propuestas en espanol**: `"**Esperando tu aprobacion antes de continuar.**"` y `"**Aprobas esta especificacion...**"`. Upstream usa inglés.
 
 5. **Stage numbering shift**: 7 stages vs 6 (el extra es Stage 3 CreateSpec).
 
 6. **Stage 1 extra steps**: Inicializacion de `.tmp/` gitignore (ademas de Codegraph y OpenSpec).
 
-7. **`<project_tools>` section** (lineas 585-638): Bloque nuevo al final del archivo con sub-bloques `<codegraph>` y `<openspec>` documentando uso obligatorio de ambas herramientas. No existe en upstream.
+7. **`<project_tools>` section** (líneas 585-638): Bloque nuevo al final del archivo con sub-bloques `<codegraph>` y `<openspec>` documentando uso obligatorio de ambas herramientas. No existe en upstream.
 
 **Archivos**:
-- `.opencode/agent/core/opencoder.md` (638 lineas vs ~420 lineas upstream)
+- `.opencode/agent/core/opencoder.md` (638 líneas vs ~420 líneas upstream)
 
 ---
 
 ### Modificado CoderAgent: restricciones heredadas de OpenCoder
 
-**Accion**: CoderAgent local diverge del upstream en 5 puntos:
+**Acción**: CoderAgent local diverge del upstream en 5 puntos:
 
-1. **Frontmatter**: Agregado `model: deepseek-v4-flash` (upstream no especifica modelo)
+1. **Frontmatter**: Agregado `model: deepseek-v4-flash` (upstream no específica modelo)
 
-2. **Constraints INHERITED FROM OPENCODER** (lineas 44-48):
+2. **Constraints INHERITED FROM OPENCODER** (líneas 44-48):
    ```
    - openspec_mandatory: solo ejecutar subtareas con proposal.md aprobado
-   - language_split: codigo/identificadores en INGLES, openspec en ESPANOL
+   - language_split: código/identificadores en INGLÉS, openspec en ESPAÑOL
    - no_automatic_commits: NUNCA git commit/add/push sin instruccion explicita
    - no_pwd_path_assumption: paths relativos al project root
    ```
    El upstream NO tiene este bloque de constraints heredadas.
 
-3. **Seccion OpenSpec agregada** (lineas 99-117): `"🗂️ OpenSpec — Planning Source of Truth"`. Instruye al CoderAgent a verificar `openspec/changes/` antes de implementar. No existe en upstream.
+3. **Seccion OpenSpec agregada** (líneas 99-117): `"🗂️ OpenSpec — Planning Source of Truth"`. Instruye al CoderAgent a verificar `openspec/changes/` antes de implementar. No existe en upstream.
 
-4. **Seccion Codegraph agregada** (lineas 120-138): `"🔍 Codegraph — Structural Understanding"`. Instruye uso de `codegraph_impact` antes de editar archivos. No existe en upstream.
+4. **Seccion Codegraph agregada** (líneas 120-138): `"🔍 Codegraph — Structural Understanding"`. Instruye uso de `codegraph_impact` antes de editar archivos. No existe en upstream.
 
 5. **Path de subtareas**: Local usa `.tmp/sessions/{session-name}/plans/{feature}/`, upstream usa `.tmp/tasks/{feature}/`
 
 **Archivos**:
-- `.opencode/agent/subagents/code/coder-agent.md` (302 lineas vs ~250 lineas upstream)
+- `.opencode/agent/subagents/code/coder-agent.md` (302 líneas vs ~250 líneas upstream)
 
 ---
 
 ### Modificado BuildAgent y CodeReviewer: solo modelo
 
-**Accion**: Ambos subagentes tienen una unica diferencia con upstream: `model: opencode-go/deepseek-v4-flash` en el frontmatter. El contenido es identico.
+**Acción**: Ambos subagentes tienen una única diferencia con upstream: `model: opencode-go/deepseek-v4-flash` en el frontmatter. El contenido es identico.
 
 **Archivos**:
 - `.opencode/agent/subagents/code/build-agent.md`
@@ -199,13 +218,13 @@ Registro de cambios al harness de OpenCode. Cada entrada documenta que se modifi
 
 ### 2026-07-23: Repositorio harness-opencode creado
 
-**Accion**: Creacion del repositorio `~/harness-opencode/` con copia completa del harness para versionado git.
+**Acción**: Creacion del repositorio `~/harness-opencode/` con copia completa del harness para versionado git.
 
 **Estructura**:
 - `.opencode/` - Harness workspace (agentes, contexto, skills, comandos, tool, config, docs)
 - `global-config/` - Config global (opencode.jsonc, dcp.jsonc, tui.json, plugins/engram.ts)
 - `global-skills/` - 18 skills globales de `~/.agents/skills/`
-- `README.md` - Documentacion del repo con guia de instalacion
+- `README.md` - Documentación del repo con guía de instalación
 - `.gitignore` - Excluye node_modules y lock files
 
 **Archivos**: `~/harness-opencode/*` (263 archivos staged)
@@ -214,7 +233,7 @@ Registro de cambios al harness de OpenCode. Cada entrada documenta que se modifi
 
 ### 2026-07-23: Agregado harness-instructions.md
 
-**Accion**: Creado `~/.opencode/harness-instructions.md` con reglas obligatorias de mantenimiento del harness:
+**Acción**: Creado `~/.opencode/harness-instructions.md` con reglas obligatorias de mantenimiento del harness:
 1. Documentar cambios en inventario/log
 2. Copiar archivos modificados al repo `~/harness-opencode/`
 3. Commitear en el repo
@@ -225,7 +244,7 @@ Registro de cambios al harness de OpenCode. Cada entrada documenta que se modifi
 
 ### 2026-07-23: Corregido formato de modelo en 4 subagentes
 
-**Accion**: `model: deepseek-v4-flash` cambiado a `model: opencode-go/deepseek-v4-flash`. OpenCode requiere formato `provider/model-id` (provider = `opencode-go`).
+**Acción**: `model: deepseek-v4-flash` cambiado a `model: opencode-go/deepseek-v4-flash`. OpenCode requiere formato `provider/model-id` (provider = `opencode-go`).
 
 **Descubrimiento**: El formato `deepseek-v4-flash` sin prefijo de provider causaba "model not available" aunque el modelo existe. Todos los modelos en OpenCode usan formato `provider/model-id`.
 
