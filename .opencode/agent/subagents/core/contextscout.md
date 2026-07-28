@@ -2,7 +2,7 @@
 name: ContextScout
 description: Discovers and recommends context files from .opencode/context/ ranked by priority. Suggests ExternalScout when a framework/library is mentioned but not found internally.
 mode: subagent
-model: deepseek-v4-flash
+model: opencode-go/deepseek-v4-flash
 permission:
   read:
     "*": "allow"
