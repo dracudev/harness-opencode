@@ -1,3 +1,42 @@
+### 2026-09-04: Instalado Playwright MCP + open-design y playwright como disabled por defecto
+
+**Acción**: Instalado `playwright MCP` (https://github.com/microsoft/playwright-mcp — 36.8k ⭐) para OpenCode. Configurado en `~/.config/opencode/opencode.jsonc` como MCP local headless.
+
+**Por qué headless**: Necesario para que el agente pueda testear webs en el futuro sin necesidad de display (servidor/headless). Usa accessibility tree, no screenshots — ligero y LLM-friendly.
+
+**Por qué disabled por defecto**: Tanto `open-design` como `playwright` se configuran con `enabled: false`. Evitan carga de schemas/tools y arranque de browser en cada sesión si no se necesitan. Se activan bajo demanda (`enabled: true` o habilitación temporal por sesión). Respuesta a petición del usuario.
+
+**Config final**:
+
+```jsonc
+"open-design": { "command": ["/home/dracudev/.local/bin/od-mcp-wrapper.sh"], "enabled": false, "type": "local" },
+"playwright": { "command": ["npx", "@playwright/mcp@latest", "--headless"], "enabled": false, "type": "local" }
+```
+
+- `playwright` usa `npx @playwright/mcp@latest --headless` (chromium por defecto, flags adicionales disponibles: `--browser`, `--isolated`, `--caps=vision,pdf`, `--viewport-size`, etc.)
+- `open-design` ya existía pero estaba `enabled: true` — ahora `false` por defecto
+- `engram` y `codegraph` permanecen `enabled: true` (core del harness)
+
+**Activación bajo demanda**:
+
+```bash
+# habilitar temporalmente (sesión)
+# editar opencode.jsonc: enabled true → restart opencode
+
+# o verificar disponibilidad
+npx @playwright/mcp@latest --help
+npx playwright install chromium  # si faltan browsers
+```
+
+**Archivos**:
+- `~/.config/opencode/opencode.jsonc` (añadido playwright, open-design → false)
+- `~/.opencode/harness-inventory.md` (secciones 1, 6, 10, 11 — actualizado a 4 MCPs, 2 bajo demanda)
+- `~/harness-opencode/global-config/opencode.jsonc` (sincronizado)
+- `~/harness-opencode/.opencode/harness-inventory.md` (sincronizado)
+- `~/harness-opencode/.opencode/harness-log.md` (esta entrada)
+
+---
+
 ### 2026-07-25: Añadido pols-slop como capa preventiva de diseño
 
 **Acción**: Instalado `pols-slop` (https://pols.dev/slop.md) como skill auto-cargado. Añadida regla en `AGENTS.md` para cargarlo automáticamente en cualquier tarea de frontend.

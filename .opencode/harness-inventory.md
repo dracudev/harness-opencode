@@ -1,6 +1,6 @@
 # OpenCode -- Inventario del Harness
 
-> **Última actualizacion**: 2026-07-23
+> **Última actualizacion**: 2026-09-04
 > **Versión OpenCode**: 1.15.13
 > **Propósito**: Referencia completa de todas las herramientas, agentes, skills, MCPs y configuraciones en este espacio de trabajo OpenCode.
 
@@ -39,12 +39,15 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "mcp": {
-    "engram": { "command": ["engram", "mcp", "--tools=agent"], "enabled": true, "type": "local" },
-    "codegraph": { "command": ["codegraph", "serve", "--mcp"], "enabled": true, "type": "local" }
+    "engram": { "command": ["/home/dracudev/.local/bin/engram", "mcp", "--tools=agent"], "enabled": true, "type": "local" },
+    "codegraph": { "command": ["codegraph", "serve", "--mcp"], "enabled": true, "type": "local" },
+    "open-design": { "command": ["/home/dracudev/.local/bin/od-mcp-wrapper.sh"], "enabled": false, "type": "local" },
+    "playwright": { "command": ["npx", "@playwright/mcp@latest", "--headless"], "enabled": false, "type": "local" }
   },
   "plugin": [
     "superpowers@git+https://github.com/obra/superpowers.git",
-    "@tarquinen/opencode-dcp@latest"
+    "@tarquinen/opencode-dcp@latest",
+    "./ponytail/.opencode/plugins/ponytail.mjs"
   ]
 }
 ```
@@ -215,10 +218,12 @@ Skills incluidos con el plugin **ponytail** (`~/.config/opencode/ponytail/skills
 
 ### Servidores MCP
 
-| Servidor | Tipo | Propósito |
-|----------|------|-----------|
-| **engram** | local | Memoria persistente via `engram mcp --tools=agent` |
-| **codegraph** | local | Comprension estructural del código via `codegraph serve --mcp` |
+| Servidor | Tipo | Propósito | Estado por defecto |
+|----------|------|-----------|-------------------|
+| **engram** | local | Memoria persistente via `engram mcp --tools=agent` | `enabled: true` |
+| **codegraph** | local | Comprension estructural del código via `codegraph serve --mcp` | `enabled: true` |
+| **open-design** | local | Design workspace local-first via `od-mcp-wrapper.sh` | `enabled: false` (bajo demanda) |
+| **playwright** | local | Automatización de navegador headless via `npx @playwright/mcp@latest --headless` | `enabled: false` (bajo demanda) |
 
 ### Herramientas Integradas
 
@@ -439,7 +444,7 @@ Estructura completa en `.opencode/context/`:
 | Subagentes (solo metadata) | 15 |
 | Skills (activos) | 25 |
 | Skills (deshabilitados) | 5 |
-| Servidores MCP | 2 |
+| Servidores MCP | 4 (2 activos + 2 bajo demanda: open-design, playwright) |
 | Plugins | 4 (3 activos + 1 cacheado) |
 | Comandos personalizados | 8+ |
 | Herramientas personalizadas | 1 |
@@ -452,14 +457,16 @@ Estructura completa en `.opencode/context/`:
 
 ## 11. Integraciones Externas
 
-| Integracion | Protocolo | Propósito |
-|-------------|-----------|-----------|
-| **Engram** | MCP (local) + HTTP (plugin) | Memoria persistente |
-| **Codegraph** | MCP (local) | Comprension de código |
-| **Context7** | API (via skill) | Documentación actualizada de librerias |
-| **Superpowers** | Plugin (npm git) | Skills de desarrollo avanzados |
-| **DCP** | Plugin (npm) | Dynamic Context Pruning |
-| **Ponytail** | Plugin (local .mjs) | Modo "lazy senior dev" con 7 niveles de escalera YAGNI. Incluye 6 skills de auditoria. |
+| Integracion | Protocolo | Propósito | Estado |
+|-------------|-----------|-----------|--------|
+| **Engram** | MCP (local) + HTTP (plugin) | Memoria persistente | Activo |
+| **Codegraph** | MCP (local) | Comprension de código | Activo |
+| **Playwright MCP** | MCP (local) | Automatización de navegador headless (`npx @playwright/mcp@latest --headless`) — 36.8k ⭐, accesibilidad tree, sin Vision | Bajo demanda (`enabled: false`) |
+| **Open Design** | MCP (local) | Design workspace local-first (`od-mcp-wrapper.sh`) | Bajo demanda (`enabled: false`) |
+| **Context7** | API (via skill) | Documentación actualizada de librerias | Activo (skill) |
+| **Superpowers** | Plugin (npm git) | Skills de desarrollo avanzados | Activo |
+| **DCP** | Plugin (npm) | Dynamic Context Pruning | Activo |
+| **Ponytail** | Plugin (local .mjs) | Modo "lazy senior dev" con 7 niveles de escalera YAGNI. Incluye 6 skills de auditoria. | Activo |
 
 ---
 

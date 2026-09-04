@@ -14,7 +14,12 @@
     "open-design": {
       "type": "local",
       "command": ["/home/dracudev/.local/bin/od-mcp-wrapper.sh"],
-      "enabled": true,
+      "enabled": false,
+    },
+    "playwright": {
+      "type": "local",
+      "command": ["npx", "@playwright/mcp@latest", "--headless"],
+      "enabled": false,
     },
   },
   "instructions": ["AGENTS.md"],
