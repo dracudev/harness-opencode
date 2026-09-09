@@ -1,3 +1,26 @@
+### 2026-09-09: Eliminado model pin deepseek-v4-flash de 11 subagentes
+
+**Acción**: Eliminada línea `model: opencode-go/deepseek-v4-flash` de 11 subagentes para que hereden el modelo por defecto del runtime (sin pin). Validado: `grep -r "deepseek\|model:" ~/.opencode/agent` sin resultados (solo historial en `harness-log.md` + `node_modules`).
+
+**Por qué**: Evitar pin a modelo específico; simplifica mantenimiento y permite cambiar default en un solo lugar. Subagentes sin override usan el default de OpenCode.
+
+**Archivos**:
+- `.opencode/agent/subagents/core/contextscout.md`
+- `.opencode/agent/subagents/core/externalscout.md`
+- `.opencode/agent/subagents/core/documentation.md`
+- `.opencode/agent/subagents/core/task-manager.md`
+- `.opencode/agent/subagents/system-builder/context-organizer.md`
+- `.opencode/agent/subagents/code/build-agent.md`
+- `.opencode/agent/subagents/code/coder-agent.md`
+- `.opencode/agent/subagents/code/test-engineer.md`
+- `.opencode/agent/subagents/code/reviewer.md`
+- `.opencode/agent/subagents/development/frontend-specialist.md`
+- `.opencode/agent/subagents/development/devops-specialist.md`
+- `.opencode/harness-log.md` (esta entrada)
+- `~/harness-opencode/.opencode/agent/subagents/*` + `~/harness-opencode/.opencode/harness-log.md` (copia sincronizada al repo)
+
+---
+
 ### 2026-09-04: Instalado Playwright MCP + open-design y playwright como disabled por defecto
 
 **Acción**: Instalado `playwright MCP` (https://github.com/microsoft/playwright-mcp — 36.8k ⭐) para OpenCode. Configurado en `~/.config/opencode/opencode.jsonc` como MCP local headless.

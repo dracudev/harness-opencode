@@ -2,7 +2,6 @@
 name: OpenDevopsSpecialist
 description: DevOps specialist subagent - CI/CD, infrastructure as code, deployment automation
 mode: subagent
-model: opencode-go/deepseek-v4-flash
 temperature: 0.1
 permission:
   task:

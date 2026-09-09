@@ -2,7 +2,6 @@
 name: TestEngineer
 description: Test authoring and TDD agent
 mode: subagent
-model: opencode-go/deepseek-v4-flash
 temperature: 0.1
 permission:
   bash:

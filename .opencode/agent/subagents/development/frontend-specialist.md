@@ -2,7 +2,6 @@
 name: OpenFrontendSpecialist
 description: Frontend UI design specialist - subagent for design systems, themes, animations
 mode: subagent
-model: opencode-go/deepseek-v4-flash
 temperature: 0.2
 permission:
   task:
