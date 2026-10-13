@@ -18,7 +18,8 @@ harness-opencode/
 │   │       └── system/           # Configuracion del sistema
 │   ├── skills/                   # Skills locales
 │   │   ├── impeccable/           # Design guidance con 23 comandos y detector CLI anti-AI-slop
-│   │   └── context7/             # Documentacion de librerias externas
+│   │   ├── context7/             # Documentacion de librerias externas
+│   │   └── task-management/      # Gestion de subtareas (task-cli)
 │   ├── command/                  # Comandos de OpenCode
 │   ├── harness-inventory.md      # Inventario completo del harness
 │   ├── harness-log.md            # Historial de cambios fechados
@@ -27,17 +28,19 @@ harness-opencode/
 │   ├── opencode.jsonc            # MCPs (engram, codegraph), plugins, providers
 │   ├── dcp.jsonc                 # Dynamic Context Pruning schema
 │   ├── tui.json                  # TUI config (subagent-statusline)
-│   └── plugins/
-│       └── engram.ts             # Plugin de memoria persistente (optimizado)
-└── global-skills/                # 17 skills globales externos
+│   ├── plugins/
+│   │   ├── engram.ts             # Plugin de memoria persistente
+│   │   └── rtk.ts                # Rust Token Killer (compresion de output bash)
+│   └── ponytail/                 # Plugin lazy-senior-dev + 5 skills de auditoria
+└── global-skills/                # 16 skills globales externos
     ├── odoo-19/                  # Odoo 19 con 18 guias especializadas
+    ├── odoo-task/                # Nombres de tarea estilo Ingeos
     ├── design-taste-frontend/    # Landing pages y portfolios (anti-slop)
     ├── caveman/                  # Comunicacion ultra-comprimida
     ├── humanizer/                # Eliminacion de marcas de IA en texto
     ├── web-quality-audit/        # Auditoria integral web
     ├── seo/                      # Optimizacion SEO
     ├── seo-audit/                # Diagnostico SEO
-    ├── schema-markup/            # Datos estructurados / rich snippets
     ├── performance/              # Optimizacion de rendimiento web
     ├── accessibility/            # Auditoria WCAG 2.2
     ├── best-practices/           # Buenas practicas web modernas
@@ -45,8 +48,8 @@ harness-opencode/
     ├── extract-design-system/    # Extraccion de design tokens
     ├── find-skills/              # Descubrimiento de skills instalables
     ├── git-commit/               # Commits con conventional commits
-    ├── brainstorm/               # Exploracion creativa pre-implementacion
-    ├── systematic-debugging/     # Debugging sistematico
+    ├── pols-slop/                # Ley anti-slop de diseno
+    ├── .agents/                  # Skills con estructura anidada (schema-markup)
     └── ... (mas skills via plugin superpowers)
 ```
 
@@ -83,7 +86,7 @@ cp -r harness-opencode/global-config/plugins/* ~/.config/opencode/plugins/
 ### Paso 3: Skills globales
 
 ```bash
-cp -r harness-opencode/global-skills/* ~/.agents/skills/
+cp -r harness-opencode/global-skills/. ~/.agents/skills/
 ```
 
 ### Paso 4: Dependencias de plugins

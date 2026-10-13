@@ -58,6 +58,10 @@
 - **Diseño**: cargar `pols-slop` antes de cualquier UI; `impeccable` para refinado.
 - **Comentarios (anti-slop)**: el código se explica solo; cero comentarios por defecto. Solo se permiten marcadores estructurales de una línea o un *porqué* no obvio (workaround, restriccion legal, docstring de API). Prohibido narrar el código, pegar párrafos de decisión, banners ASCII/emoji, código comentado, `TODO`/`FIXME` y marcadores `ponytail:`.
 
+### Directorios del Workspace (`~/.opencode/`)
+
+- **`v2-migration/`**: entorno de prueba aislado de OpenCode V2 (~1.5 GB). NO forma parte del espejo del harness (`harness-opencode`) y está ignorado por `.gitignore`.
+
 ---
 
 ## 2. Capa de Planificación
@@ -147,6 +151,7 @@
 | Skill | Propósito | Ubicación |
 |-------|-----------|-----------|
 | **odoo-19** | 18 guías especializadas: Actions, Controllers, Data files, Decorators, Constraints, Indexes, Module dev, Fields, Manifest, Mixins, ORM, Migration, OWL, Performance, QWeb, Security, Testing, Transactions, Translations, XML Views | `~/.agents/skills/odoo-19/SKILL.md` |
+| **odoo-task** | Nombres de tarea estilo Ingeos (español de España, formato "Área: cambio A + cambio B") a partir del chat/sesión o de los últimos commits | `~/.agents/skills/odoo-task/SKILL.md` |
 
 ### Frontend y Diseño
 
@@ -446,7 +451,7 @@ Estructura completa en `.opencode/context/`:
 | Agentes principales | 2 |
 | Subagentes (implementados) | 11 |
 | Subagentes (solo metadata) | 15 |
-| Skills (activos) | 25 |
+| Skills (activos) | 26 |
 | Skills (deshabilitados) | 5 |
 | Servidores MCP | 3 (1 activo + 2 bajo demanda: codegraph, playwright) |
 | Plugins | 4 (3 activos + 1 cacheado) |

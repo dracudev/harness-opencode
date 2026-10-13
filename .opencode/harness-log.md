@@ -1,3 +1,21 @@
+### 2026-10-13: Auditoría de deriva + migración de odoo-task y schema-markup
+
+**Acción**: Auditoría completa de los tres árboles vivos (`~/.opencode`, `~/.config/opencode`, `~/.agents/skills`) contra sus espejos en `harness-opencode`. Deriva detectada y corregida: (1) migrado el skill `odoo-task` a `global-skills/` (faltaba por completo); (2) migrada la estructura anidada de `schema-markup` (`global-skills/.agents/skills/schema-markup/` + symlink `global-skills/.claude/skills/schema-markup`); (3) documentado `v2-migration/` en el inventario; (4) corregido el README (conteo de skills, ruta anidada de schema-markup, skills de superpowers mal listadas, comando `cp` del Paso 3).
+
+**Por qué**: El repo `harness-opencode` debe reflejar la configuración viva. Faltaban una skill propia (`odoo-task`) y la instalación anidada de `schema-markup`; el README y el conteo de skills estaban desactualizados.
+
+**Archivos**:
+- `~/harness-opencode/global-skills/odoo-task/` (nuevo)
+- `~/harness-opencode/global-skills/.agents/skills/schema-markup/` (nuevo)
+- `~/harness-opencode/global-skills/.claude/skills/schema-markup` (symlink nuevo)
+- `~/.opencode/harness-inventory.md` + espejo (fila odoo-task, nota `v2-migration/`, skills 25→26)
+- `~/harness-opencode/README.md` (conteo, estructura, Paso 3)
+- `~/.opencode/harness-log.md` + espejo
+
+**Validado**: `diff -rq` vivo↔repo limpio; `grep odoo-task` presente en repo; symlink preservado.
+
+---
+
 ### 2026-10-13: Eliminado skill ponytail-debt (obsoleto)
 
 **Acción**: Eliminado el skill/command `ponytail-debt` (ledger de marcadores `ponytail:` en código) de todo el harness ponytail. Tras la nueva disciplina de comentarios — que prohíbe los marcadores `ponytail:` en el código — el feature quedaba sin fuente de datos.
