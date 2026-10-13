@@ -60,7 +60,7 @@
 
 ### Directorios del Workspace (`~/.opencode/`)
 
-- **`v2-migration/`**: entorno de prueba aislado de OpenCode V2 (~1.5 GB). NO forma parte del espejo del harness (`harness-opencode`) y está ignorado por `.gitignore`.
+- **`v2-migration/`**: registro de la migración a OpenCode V2 (V2 es ya la versión viva, 2.0.28): informe `README.md`, `engram-plugin-patch.md`, `rollback-v1/` (snapshot V1 restaurable con `restore.sh`) y ficheros de referencia. NO forma parte del espejo del harness (`harness-opencode`) y está ignorado por `.gitignore`.
 
 ---
 
@@ -637,4 +637,6 @@ npx impeccable ignores list     # gestion de waivers
 | `superpowers@git+https:...` | Versión vinculada al repositorio git (activa) | Activo |
 | `@tarquinen/opencode-dcp@latest` | Dynamic Context Pruning | Activo |
 | **opencode-plugin-openspec@latest** | Spec-driven development con OpenSpec | Cacheado (integrado via `.opencode/node_modules/`) |
-| **opencode-subagent-statusline@latest** | Muestra estado de subagentes en TUI | Cacheado (no declarado en config, posible auto-descubrimiento) |
+| **opencode-subagent-statusline@latest** | Muestra estado de subagentes en TUI | Retirado (plugin solo V1; no usado en OpenCode V2) |
+| **@dietrichgebert/ponytail** | Reglas de estilo ponytail (plugin dual V1/V2) | Activo (OpenCode V2) |
+| **engram.ts / rtk.ts / oac-shim** | Plugins locales (`~/.config/opencode/plugins/`) | Activo (OpenCode V2) |

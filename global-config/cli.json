@@ -1,0 +1,10 @@
+{
+  "$schema": "https://opencode.ai/v2/cli.json",
+  "plugins": [],
+  "session": {
+    "permissions": "autoaccept"
+  },
+  "theme": {
+    "name": "cursor"
+  }
+}

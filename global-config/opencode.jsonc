@@ -1,10 +1,11 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "default_agent": "core/openagent",
   "mcp": {
     "engram": {
+      "type": "local",
       "command": ["/home/dracudev/.local/bin/engram", "mcp", "--tools=agent"],
       "enabled": true,
-      "type": "local",
     },
     "codegraph": {
       "type": "local",
@@ -19,8 +20,8 @@
   },
   "instructions": ["AGENTS.md"],
   "plugin": [
-    "superpowers@git+https://github.com/obra/superpowers.git",
+    "superpowers@git+https://github.com/obra/superpowers.git#v7.0.0",
     "@tarquinen/opencode-dcp@latest",
-    "./ponytail/.opencode/plugins/ponytail.mjs",
+    "@dietrichgebert/ponytail",
   ],
 }

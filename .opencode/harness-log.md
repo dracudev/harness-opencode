@@ -1,3 +1,24 @@
+### 2026-10-13: Migración a OpenCode V2 (2.0.28)
+
+**Acción**: Migrada la instalación de OpenCode de V1 (1.18.35) a V2 (2.0.28) y actualizado el espejo del harness con la configuración viva:
+- `global-config/opencode.jsonc` → versión V2: `default_agent: "core/openagent"`, MCP `engram` activo y `codegraph`/`playwright` bajo demanda, `ponytail` vía npm (`@dietrichgebert/ponytail` en vez de ruta local) y `superpowers` fijado a `#v7.0.0`.
+- `global-config/cli.json` (nuevo) sustituye a `tui.json` (eliminado); sin `opencode-subagent-statusline`.
+- `global-config/plugins/`: `engram.ts` (adaptador V1/V2 de upstream + parche fail-open local), `rtk.ts` (port dual V1/V2) y `oac-shim/` (nuevo puente OAC con `task`/`todowrite`/`todoread`).
+- Binario `engram` actualizado a v3.4.0 (perfil de agente: 19 herramientas).
+
+**Por qué**: El ecosistema ya soporta V2 de forma nativa (superpowers ≥ v6.4.1, ponytail v5.2.0 dual, engram con adaptador fusionado) y el proyecto recomienda migrar. En V2 los agentes OAC se descubren con ID = ruta relativa y V2 traduce automáticamente el frontmatter V1 `permission:`; el despacho por nombre corto lo cubre `oac-shim`.
+
+**Archivos**:
+- `~/harness-opencode/global-config/{opencode.jsonc,cli.json,plugins/*}`
+- `~/.config/opencode/*` (config viva)
+- `~/.opencode/harness-inventory.md` + espejo
+- `~/.opencode/harness-log.md` + espejo
+- `~/.opencode/v2-migration/{README.md,engram-plugin-patch.md,rollback-v1/}` (registro de migración)
+
+**Validado**: `opencode --version` = 2.0.28; `opencode plugin list` = 6 plugins cargados; `opencode mcp list` = engram conectado; escrituras de memoria engram verificadas (`mem_save`, `mem_save_prompt`, `mem_capture_passive`). El estado previo (V1) queda preservado en la rama `v1` del repositorio.
+
+---
+
 ### 2026-10-13: Auditoría de deriva + migración de odoo-task y schema-markup
 
 **Acción**: Auditoría completa de los tres árboles vivos (`~/.opencode`, `~/.config/opencode`, `~/.agents/skills`) contra sus espejos en `harness-opencode`. Deriva detectada y corregida: (1) migrado el skill `odoo-task` a `global-skills/` (faltaba por completo); (2) migrada la estructura anidada de `schema-markup` (`global-skills/.agents/skills/schema-markup/` + symlink `global-skills/.claude/skills/schema-markup`); (3) documentado `v2-migration/` en el inventario; (4) corregido el README (conteo de skills, ruta anidada de schema-markup, skills de superpowers mal listadas, comando `cp` del Paso 3).
