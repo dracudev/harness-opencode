@@ -1,3 +1,15 @@
+### 2026-10-13: DCP — activar compresión automática en V2
+
+**Acción**: `~/.config/opencode/dcp.jsonc` pasa de solo schema a definir `"compress": { "permission": "allow" }`.
+
+**Por qué**: En OpenCode V2 la compresión automática de DCP se bloqueaba en silencio: con la clave `compress.permission` sin definir y `ask` no soportado en V2, no había poda automática de contexto (sensación de 26% de contexto frente al ~10% habitual en V1). DCP 3.2.0 ya es la release con soporte V2 y no hay versión estable más nueva.
+
+**Archivos**: `~/.config/opencode/dcp.jsonc`, `~/harness-opencode/global-config/dcp.jsonc`.
+
+**Validado**: herramienta `compress` operativa; pendiente de confirmar la poda automática en una sesión larga.
+
+---
+
 ### 2026-10-13: Migración a OpenCode V2 (2.0.28)
 
 **Acción**: Migrada la instalación de OpenCode de V1 (1.18.35) a V2 (2.0.28) y actualizado el espejo del harness con la configuración viva:
