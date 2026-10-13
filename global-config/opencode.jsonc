@@ -9,16 +9,11 @@
     "codegraph": {
       "type": "local",
       "command": ["codegraph", "serve", "--mcp"],
-      "enabled": true,
-    },
-    "open-design": {
-      "type": "local",
-      "command": ["/home/dracudev/.local/bin/od-mcp-wrapper.sh"],
       "enabled": false,
     },
     "playwright": {
       "type": "local",
-      "command": ["npx", "@playwright/mcp@latest", "--headless"],
+      "command": ["npx", "@playwright/mcp@latest", "--headless", "--ignore-https-errors", "--executable-path", "/home/dracudev/.cache/ms-playwright/chromium-1234/chrome-linux64/chrome"],
       "enabled": false,
     },
   },

@@ -9,13 +9,11 @@ provides_commands:
   - ponytail
   - ponytail-review
   - ponytail-audit
-  - ponytail-debt
   - ponytail-gain
   - ponytail-help
 provides_skills:
   - ponytail
   - ponytail-review
   - ponytail-audit
-  - ponytail-debt
   - ponytail-gain
   - ponytail-help

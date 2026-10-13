@@ -1,3 +1,37 @@
+### 2026-10-13: Eliminado skill ponytail-debt (obsoleto)
+
+**Acción**: Eliminado el skill/command `ponytail-debt` (ledger de marcadores `ponytail:` en código) de todo el harness ponytail. Tras la nueva disciplina de comentarios — que prohíbe los marcadores `ponytail:` en el código — el feature quedaba sin fuente de datos.
+
+**Por qué**: El marcador `ponytail:` ya no se escribe, así que el skill de deuda no tenía nada que recolectar. Los shortcuts diferidos ahora se declaran en la respuesta, no en el archivo.
+
+**Archivos**:
+- `~/.config/opencode/ponytail/skills/ponytail-debt/SKILL.md` (eliminado)
+- `~/.config/opencode/ponytail/.openclaw/skills/ponytail-debt/` (eliminado)
+- `~/.config/opencode/ponytail/.opencode/command/ponytail-debt.md` (eliminado)
+- `~/.config/opencode/ponytail/commands/ponytail-debt.toml` (eliminado)
+- ~19 archivos con referencias purgadas (skills `help`/`gain`, `.openclaw` regenerado via `scripts/build-openclaw-skills.js`, `plugin.yaml`, `__init__.py`, `pi-extension/index.js`, tests, `README.*`, `docs/agent-portability.md`, `after-install.md`)
+- `~/harness-opencode/global-config/ponytail/` (espejo sincronizado)
+- `~/.opencode/harness-inventory.md` + `~/harness-opencode/.opencode/harness-inventory.md` (quitada fila del skill; 6→5 skills)
+
+**Validado**: `grep -r "ponytail-debt\|debt ledger"` → 0 coincidencias. `pi-extension` → 23/23 tests OK. Raíz `node --test tests/*.test.js` → 78/79 (único fallo `csv` pre-existente, por pandas no instalado; ajeno al cambio).
+
+---
+
+### 2026-10-13: Disciplina de comentarios anti-slop + depuración de MCPs
+
+**Acción**: (1) Añadida sección `# Comments` en `AGENTS.md` global: el código se explica solo, cero comentarios por defecto; solo marcadores estructurales de una línea o un *porqué* no obvio. (2) Reglas del plugin ponytail reformuladas en consecuencia: los marcadores `ponytail:` en código se sustituyen por la mención del techo + ruta de mejora en la respuesta. (3) MCPs: eliminado `open-design` (y `od-mcp-wrapper.sh`), `codegraph` → `enabled: false`, `playwright` headless con `--ignore-https-errors` + `--executable-path`.
+
+**Por qué**: Eliminar el ruido de comentarios generados por IA. La disciplina de comentarios es una regla siempre-activa, así que vive en `AGENTS.md` (instrucción global) y no en un skill por palabra clave; además, el plugin ponytail la propaga al system prompt en cada turno vía `experimental.chat.system.transform`.
+
+**Archivos**:
+- `~/.config/opencode/AGENTS.md` (sección `# Comments`)
+- `~/.config/opencode/opencode.jsonc` (MCPs: fuera open-design, codegraph off, playwright flags)
+- `~/.config/opencode/ponytail/` (`skills/ponytail/SKILL.md`, `hooks/ponytail-instructions.js`, `.opencode/command/ponytail.md`, `AGENTS.md` + 7 copias de plataforma, `pi-extension/test/helpers.test.js`)
+- `~/harness-opencode/global-config/` (`AGENTS.md`, `opencode.jsonc`, `ponytail/`; borrado `od-mcp-wrapper.sh`)
+- `~/.opencode/harness-inventory.md` + `~/harness-opencode/.opencode/harness-inventory.md` (bloque de config + subsección de instrucciones globales + conteo MCP 4→3)
+
+---
+
 ### 2026-09-09: Eliminado model pin deepseek-v4-flash de 11 subagentes
 
 **Acción**: Eliminada línea `model: opencode-go/deepseek-v4-flash` de 11 subagentes para que hereden el modelo por defecto del runtime (sin pin). Validado: `grep -r "deepseek\|model:" ~/.opencode/agent` sin resultados (solo historial en `harness-log.md` + `node_modules`).

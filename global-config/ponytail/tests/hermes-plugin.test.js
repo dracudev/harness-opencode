@@ -10,7 +10,7 @@ const os = require('os');
 const path = require('path');
 const { spawnSync } = require('child_process');
 
-const commands = ['ponytail', 'ponytail-review', 'ponytail-audit', 'ponytail-debt', 'ponytail-gain', 'ponytail-help'];
+const commands = ['ponytail', 'ponytail-review', 'ponytail-audit', 'ponytail-gain', 'ponytail-help'];
 const skillCommands = commands.filter((name) => name !== 'ponytail');
 
 const root = path.join(__dirname, '..');
@@ -83,7 +83,6 @@ print(json.dumps({'skills': ctx.skills, 'hooks': ctx.hooks, 'commands': ctx.comm
   assert.deepEqual(data.skills.map(([name]) => name).sort(), [
     'ponytail',
     'ponytail-audit',
-    'ponytail-debt',
     'ponytail-gain',
     'ponytail-help',
     'ponytail-review',
@@ -221,7 +220,7 @@ spec.loader.exec_module(mod)
 class Event:
     def __init__(self, text): self.text = text
 cases = {}
-for text in ['/ponytail-review x', '/ponytail_audit repo', '/ponytail-debt', '/ponytail-help', '/status', 'hello']:
+for text in ['/ponytail-review x', '/ponytail_audit repo', '/ponytail-help', '/status', 'hello']:
     cases[text] = mod.rewrite_gateway_command(event=Event(text))
 print(json.dumps(cases, sort_keys=True))
 `);
@@ -229,7 +228,6 @@ print(json.dumps(cases, sort_keys=True))
   assert.match(data['/ponytail-review x'].text, /ponytail-review/);
   assert.match(data['/ponytail_audit repo'].text, /ponytail-audit/);
   assert.match(data['/ponytail_audit repo'].text, /repo/);
-  assert.match(data['/ponytail-debt'].text, /ponytail-debt/);
   assert.match(data['/ponytail-help'].text, /ponytail-help/);
   assert.equal(data['/status'], null);
   assert.equal(data.hello, null);

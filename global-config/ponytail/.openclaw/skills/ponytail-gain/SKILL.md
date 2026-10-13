@@ -29,8 +29,7 @@ carries the exact figure:
                   ponytail  █████▌··············   23–53%  ▼ 47–77%
   Speed           ponytail  ▸ 3–6× faster
 
-  This repo:  /ponytail-debt  (shortcuts you deferred)
-              /ponytail-audit (what's still cuttable)
+  This repo:  /ponytail-audit (what's still cuttable)
 ```
 
 ## Honesty boundary
@@ -38,7 +37,7 @@ carries the exact figure:
 These are benchmark medians, not this repo. NEVER print a per-repo savings
 number ("you saved X lines/tokens here"): the unbuilt version was never
 written, so there is no real baseline to subtract from in a live repo. The
-only real per-repo figures come from `/ponytail-debt` (a counted ledger), and
+only real per-repo figure is `/ponytail-audit` (what is still cuttable), and
 this card points there instead of inventing one.
 
 ## Boundaries

@@ -143,7 +143,7 @@ test("filterSkillBodyForMode keeps rule bullets that contain a colon", () => {
 
   assert.ok(filtered.includes("No unrequested abstractions"));
   assert.ok(filtered.includes("Mark deliberate simplifications that cut a real corner"));
-  assert.ok(filtered.includes("`ponytail:` comment naming the ceiling and upgrade path"));
+  assert.ok(filtered.includes("by naming the ceiling and the upgrade path in your reply"));
   // The Intensity examples are still filtered down to the active mode.
   assert.ok(filtered.includes('full: "`@lru_cache'));
   assert.ok(!filtered.includes('lite: "Done'));

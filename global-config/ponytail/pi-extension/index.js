@@ -161,11 +161,6 @@ export default function ponytailExtension(pi) {
     handler: (_args, ctx) => sendAlias("/skill:ponytail-gain", "", ctx),
   });
 
-  pi.registerCommand("ponytail-debt", {
-    description: "Run /skill:ponytail-debt",
-    handler: (_args, ctx) => sendAlias("/skill:ponytail-debt", "", ctx),
-  });
-
   pi.registerCommand("ponytail-help", {
     description: "Run /skill:ponytail-help",
     handler: (_args, ctx) => sendAlias("/skill:ponytail-help", "", ctx),

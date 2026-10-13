@@ -1,6 +1,6 @@
 # OpenCode -- Inventario del Harness
 
-> **Última actualizacion**: 2026-09-04
+> **Última actualizacion**: 2026-10-13
 > **Versión OpenCode**: 1.15.13
 > **Propósito**: Referencia completa de todas las herramientas, agentes, skills, MCPs y configuraciones en este espacio de trabajo OpenCode.
 
@@ -40,10 +40,10 @@
   "$schema": "https://opencode.ai/config.json",
   "mcp": {
     "engram": { "command": ["/home/dracudev/.local/bin/engram", "mcp", "--tools=agent"], "enabled": true, "type": "local" },
-    "codegraph": { "command": ["codegraph", "serve", "--mcp"], "enabled": true, "type": "local" },
-    "open-design": { "command": ["/home/dracudev/.local/bin/od-mcp-wrapper.sh"], "enabled": false, "type": "local" },
-    "playwright": { "command": ["npx", "@playwright/mcp@latest", "--headless"], "enabled": false, "type": "local" }
+    "codegraph": { "command": ["codegraph", "serve", "--mcp"], "enabled": false, "type": "local" },
+    "playwright": { "command": ["npx", "@playwright/mcp@latest", "--headless", "--ignore-https-errors", "--executable-path", "/home/dracudev/.cache/ms-playwright/chromium-1234/chrome-linux64/chrome"], "enabled": false, "type": "local" }
   },
+  "instructions": ["AGENTS.md"],
   "plugin": [
     "superpowers@git+https://github.com/obra/superpowers.git",
     "@tarquinen/opencode-dcp@latest",
@@ -51,6 +51,12 @@
   ]
 }
 ```
+
+### Instrucciones Globales (`~/.config/opencode/AGENTS.md`)
+
+- **Idioma**: inglés por defecto; español de España ("tú") cuando el usuario escribe en español. Ortografía correcta en todo texto (tildes, eñes).
+- **Diseño**: cargar `pols-slop` antes de cualquier UI; `impeccable` para refinado.
+- **Comentarios (anti-slop)**: el código se explica solo; cero comentarios por defecto. Solo se permiten marcadores estructurales de una línea o un *porqué* no obvio (workaround, restriccion legal, docstring de API). Prohibido narrar el código, pegar párrafos de decisión, banners ASCII/emoji, código comentado, `TODO`/`FIXME` y marcadores `ponytail:`.
 
 ---
 
@@ -187,7 +193,6 @@ Skills incluidos con el plugin **ponytail** (`~/.config/opencode/ponytail/skills
 | **ponytail** | Cambiar intensidad: lite/full/ultra/off |
 | **ponytail-review** | Revisa el diff actual por over-engineering, sugiere que borrar |
 | **ponytail-audit** | Audita el repo entero por código innecesario |
-| **ponytail-debt** | Tracking de shortcuts `ponytail:` diferidos ("later" -> "never" prevention) |
 | **ponytail-gain** | Scoreboard de impacto medido (-54% LOC, -20% costo, -27% tiempo) |
 | **ponytail-help** | Referencia rápida de comandos |
 
@@ -221,8 +226,7 @@ Skills incluidos con el plugin **ponytail** (`~/.config/opencode/ponytail/skills
 | Servidor | Tipo | Propósito | Estado por defecto |
 |----------|------|-----------|-------------------|
 | **engram** | local | Memoria persistente via `engram mcp --tools=agent` | `enabled: true` |
-| **codegraph** | local | Comprension estructural del código via `codegraph serve --mcp` | `enabled: true` |
-| **open-design** | local | Design workspace local-first via `od-mcp-wrapper.sh` | `enabled: false` (bajo demanda) |
+| **codegraph** | local | Comprension estructural del código via `codegraph serve --mcp` | `enabled: false` (bajo demanda) |
 | **playwright** | local | Automatización de navegador headless via `npx @playwright/mcp@latest --headless` | `enabled: false` (bajo demanda) |
 
 ### Herramientas Integradas
@@ -444,7 +448,7 @@ Estructura completa en `.opencode/context/`:
 | Subagentes (solo metadata) | 15 |
 | Skills (activos) | 25 |
 | Skills (deshabilitados) | 5 |
-| Servidores MCP | 4 (2 activos + 2 bajo demanda: open-design, playwright) |
+| Servidores MCP | 3 (1 activo + 2 bajo demanda: codegraph, playwright) |
 | Plugins | 4 (3 activos + 1 cacheado) |
 | Comandos personalizados | 8+ |
 | Herramientas personalizadas | 1 |
@@ -462,11 +466,10 @@ Estructura completa en `.opencode/context/`:
 | **Engram** | MCP (local) + HTTP (plugin) | Memoria persistente | Activo |
 | **Codegraph** | MCP (local) | Comprension de código | Activo |
 | **Playwright MCP** | MCP (local) | Automatización de navegador headless (`npx @playwright/mcp@latest --headless`) — 36.8k ⭐, accesibilidad tree, sin Vision | Bajo demanda (`enabled: false`) |
-| **Open Design** | MCP (local) | Design workspace local-first (`od-mcp-wrapper.sh`) | Bajo demanda (`enabled: false`) |
 | **Context7** | API (via skill) | Documentación actualizada de librerias | Activo (skill) |
 | **Superpowers** | Plugin (npm git) | Skills de desarrollo avanzados | Activo |
 | **DCP** | Plugin (npm) | Dynamic Context Pruning | Activo |
-| **Ponytail** | Plugin (local .mjs) | Modo "lazy senior dev" con 7 niveles de escalera YAGNI. Incluye 6 skills de auditoria. | Activo |
+| **Ponytail** | Plugin (local .mjs) | Modo "lazy senior dev" con 7 niveles de escalera YAGNI. Incluye 5 skills de auditoria. | Activo |
 
 ---
 
@@ -545,7 +548,7 @@ Directorios y archivos fuera de `.opencode/` que forman parte del harness.
 - **Ubicación**: `~/.config/opencode/ponytail/`
 - **Activo**: Siempre (plugin en `opencode.jsonc`), nivel `full`
 
-Modo "lazy senior dev" con escalera YAGNI de 7 niveles. Metricas: -54% LOC, -22% tokens, -20% costo. Incluye 6 skills: ponytail, ponytail-review, ponytail-audit, ponytail-debt, ponytail-gain, ponytail-help.
+Modo "lazy senior dev" con escalera YAGNI de 7 niveles. Metricas: -54% LOC, -22% tokens, -20% costo. Incluye 5 skills: ponytail, ponytail-review, ponytail-audit, ponytail-gain, ponytail-help.
 
 ### RTK -- Rust Token Killer
 
@@ -618,7 +621,7 @@ npx impeccable ignores list     # gestion de waivers
 | **superpowers** | `git+https://github.com/obra/superpowers.git` | 10 skills de desarrollo avanzados |
 | **opencode-dcp** | `@tarquinen/opencode-dcp@latest` | Dynamic Context Pruning |
 | **engram** | `~/.config/opencode/plugins/engram.ts` | Adaptador de memoria persistente |
-| **ponytail** | `./ponytail/.opencode/plugins/ponytail.mjs` | Modo "lazy senior dev": reduce código generado (-54% LOC, -20% costo) via escalera YAGNI. Siempre activo, niveles: lite/full/ultra/off. Incluye 6 skills de auditoria. |
+| **ponytail** | `./ponytail/.opencode/plugins/ponytail.mjs` | Modo "lazy senior dev": reduce código generado (-54% LOC, -20% costo) via escalera YAGNI. Siempre activo, niveles: lite/full/ultra/off. Incluye 5 skills de auditoria. |
 | **rtk** | `~/.config/opencode/plugins/rtk.ts` | Intercepta bash commands y comprime output antes del LLM. 100+ comandos soportados, <10ms overhead. |
 
 ### Paquetes Cacheados (~/.cache/opencode/packages/)

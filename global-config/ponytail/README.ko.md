@@ -256,7 +256,6 @@ Codex 확장을 쓰는 VS Code는 이 저장소가 함께 싣는 `AGENTS.md`를 
 | `/ponytail [lite \| full \| ultra \| off]` | 강도를 정하거나, 끈다. 인수가 없으면 지금 레벨을 알려 준다. |
 | `/ponytail-review` | 지금 diff를 과잉 구현 관점에서 훑고, 삭제 목록을 돌려준다. |
 | `/ponytail-audit` | diff만이 아니라 저장소 전체를 과잉 구현 관점에서 감사한다. |
-| `/ponytail-debt` | 미뤄 둔 `ponytail:` 간소화들을 장부로 모아, "나중에"가 "영영"이 되지 않게 한다. |
 | `/ponytail-gain` | 벤치마크로 잰 효과 스코어보드(코드 절감, 비용 절감, 속도 향상)를 보여 준다. |
 | `/ponytail-help` | 위 명령들의 빠른 참조. |
 
