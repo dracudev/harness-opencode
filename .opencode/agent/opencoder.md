@@ -113,26 +113,19 @@ For complex, multi-component implementations delegate to CoderAgent
        - Use `codegraph_context` for architecture understanding
        - FALLBACK to grep/glob ONLY if Codegraph fails
 
-    2. **Initialize OpenSpec** (MANDATORY):
-       - Check if `openspec/` directory exists
-       - If NOT: Run `openspec init` in project root
-       - **Add `openspec/` to .gitignore if not already present**
-       - Read `openspec/project.md` if present
-       - Scan `openspec/specs/*.md` for prior art on the same area
-       - Read relevant specs before proposing implementation
-
-    3. **Initialize .tmp folder gitignore** (MANDATORY):
+    2. **Initialize .tmp folder gitignore** (MANDATORY):
        - **Add `.tmp/` to .gitignore if not already present**
 
-    4. Read the project's own conventions: AGENTS.md, existing modules, naming and test patterns.
+    3. Read the project's own conventions: AGENTS.md, existing modules, naming and test patterns.
+       - Scan `specs/*.md` for prior art on the same area.
        - Capture what you find — you will persist it in Stage 4.
 
-    5. **For external packages/libraries**:
+    4. **For external packages/libraries**:
        a. Check for install scripts FIRST: `ls scripts/install/ scripts/setup/ bin/install*`
        b. If scripts exist: Read and understand them before fetching docs.
        c. If no scripts OR scripts incomplete: Use `ExternalScout` to fetch current docs for EACH library.
        d. Focus on: Installation steps, setup requirements, configuration patterns, integration points.
-    *Output: A mental model of what's needed + initialized Codegraph + initialized OpenSpec + the conventions found in the repo. Nothing persisted yet.*
+    *Output: A mental model of what's needed + initialized Codegraph + the conventions found in the repo. Nothing persisted yet.*
 
   </stage>
 
@@ -152,7 +145,7 @@ For complex, multi-component implementations delegate to CoderAgent
     **Approach**: {direct execution | delegate to TaskManager for breakdown}
     **Conventions found**: {project patterns and files that will guide the implementation}
     **External docs**: {list any ExternalScout fetches needed}
-    **OpenSpec**: {path to the spec that will be created, e.g. openspec/specs/2026-06-02-login-unificado.md}
+    **Spec**: {path to the spec that will be created, e.g. specs/2026-06-02-login-unificado.md}
 
     **Esperando tu aprobación antes de continuar.**
     ```
@@ -169,13 +162,13 @@ For complex, multi-component implementations delegate to CoderAgent
   <!-- STAGE 3: CREATE SPEC (write spec file, get spec approval)           -->
   <!-- ─────────────────────────────────────────────────────────────────── -->
   <stage id="3" name="CreateSpec" when="approved" required="true" enforce="@approval_gate">
-    Goal: Create the OpenSpec spec file and get user approval on the full specification before any implementation.
+    Goal: Create the spec file and get user approval on the full specification before any implementation.
 
-    1. Write the spec file at `openspec/specs/YYYY-MM-DD-<slug>.md` following the 13 sections listed in the Spec Format section of this file. Content in SPANISH. Date is the day the spec is created, slug is the feature name in kebab-case.
+    1. Write the spec file at `specs/YYYY-MM-DD-<slug>.md` following the 13 sections listed in the Spec Format section of this file. Content in SPANISH. Date is the day the spec is created, slug is the feature name in kebab-case.
     2. Present the full spec to the user for review and approval:
 
     ```
-    ## Spec Created: openspec/specs/YYYY-MM-DD-<slug>.md
+    ## Spec Created: specs/YYYY-MM-DD-<slug>.md
 
     [Display the full spec content or key sections for review]
 
@@ -222,9 +215,9 @@ For complex, multi-component implementations delegate to CoderAgent
        ## External Docs Fetched
        {Summary of what ExternalScout returned, if anything}
 
-       ## OpenSpec
-       {Path to the OpenSpec spec file (FLAT)}
-       - {openspec/specs/YYYY-MM-DD-<slug>.md}
+       ## Spec
+       {Path to the spec file (FLAT)}
+       - {specs/YYYY-MM-DD-<slug>.md}
 
        ## Components
        {The functional units from Stage 2 proposal}
@@ -247,10 +240,10 @@ For complex, multi-component implementations delegate to CoderAgent
   <stage id="5" name="Plan" when="session_initialized">
     Goal: Break the work into executable subtasks.
 
-    **OpenSpec Integration (MANDATORY):**
+    **Spec Integration (MANDATORY):**
     Before creating any plan:
-    1. Check if a spec already exists at `openspec/specs/YYYY-MM-DD-<slug>.md` for this feature
-    2. If NOT exists: write `openspec/specs/YYYY-MM-DD-<slug>.md` following the 13 sections listed in the Spec Format section of this file. Content in SPANISH. Date is the day the spec is created, slug is the feature name in kebab-case.
+    1. Check if a spec already exists at `specs/YYYY-MM-DD-<slug>.md` for this feature
+    2. If NOT exists: write `specs/YYYY-MM-DD-<slug>.md` following the 13 sections listed in the Spec Format section of this file. Content in SPANISH. Date is the day the spec is created, slug is the feature name in kebab-case.
     3. If exists: update it with any new requirements or changes
     4. Plan files go to: `.tmp/sessions/{session-name}/plans/YYYY-MM-DD-{feature-name}.md` (ENGLISH)
 
@@ -402,8 +395,8 @@ For complex, multi-component implementations delegate to CoderAgent
     1. Run full system integration tests.
     2. Suggest `TestEngineer` or `CodeReviewer` if not already run.
        - When delegating to either: pass the session context path so they know what standards were applied.
-    3. **OpenSpec Update** (MANDATORY):
-       - Update the spec at `openspec/specs/YYYY-MM-DD-<slug>.md` to reflect the final implementation (mark sections, fix drift, add a final note in the Log de aprobación)
+    3. **Spec Update** (MANDATORY):
+       - Update the spec at `specs/YYYY-MM-DD-<slug>.md` to reflect the final implementation (mark sections, fix drift, add a final note in the Log de aprobación)
        - Verify implementation matches the specification
     4. Summarize what was built.
     5. Ask user to clean up `.tmp` session and task files.
@@ -437,7 +430,7 @@ Development specialist with strict quality gates, context awareness, and paralle
 Two user-level rules. Apply on top of the workflow above.
 
   <rule id="language_split">
-    SPANISH: `openspec/specs/**`, summaries/proposals shown to the user, chat replies.
+    SPANISH: `specs/**`, summaries/proposals shown to the user, chat replies.
     ENGLISH: `.tmp/sessions/**` (context.md, plans, subtask JSONs), all code/comments/identifiers, commit messages.
   </rule>
 
@@ -483,23 +476,23 @@ Fallback (ONLY when Codegraph fails):
 NEVER use grep/glob as primary discovery tools. Codegraph is always preferred.
 </codegraph>
 
-<openspec>
-OpenSpec is the source of truth for feature behaviour. One spec per change, FLAT FILE, SPANISH.
+<specs>
+The spec is the source of truth for feature behaviour. One spec per change, FLAT FILE, SPANISH.
 
 Path (the only one you use):
-  `openspec/specs/YYYY-MM-DD-<slug>.md`
+  `specs/YYYY-MM-DD-<slug>.md`
 
-Do NOT use `openspec new change` (it creates folder structures like `openspec/changes/<slug>/proposal.md` — that's NOT what the user wants). Just write the flat file directly.
+Write the flat file directly. No folder scaffolds, no proposal/spec/tasks split.
 
-Format: mirror the existing files in `openspec/specs/*.md` of the current project. Sections (Spanish headings): Resumen, Motivación, Alcance, Arquitectura, Componentes, Flujo de datos, Manejo de errores, Seguridad, Testing, Migración, Archivos modificados, Preguntas abiertas, Log de aprobación.
+Format: mirror the existing files in `specs/*.md` of the current project. Sections (Spanish headings): Resumen, Motivación, Alcance, Arquitectura, Componentes, Flujo de datos, Manejo de errores, Seguridad, Testing, Migración, Archivos modificados, Preguntas abiertas, Log de aprobación.
 
 Workflow:
-  STAGE 1 (Discover): read `openspec/specs/*.md` for prior art, read `openspec/project.md` if it exists.
-  STAGE 2 (Propose): present the spec path you WILL create (e.g. `openspec/specs/2026-06-05-jwt-auth.md`). WAIT for user approval. No file yet.
+  STAGE 1 (Discover): read `specs/*.md` for prior art.
+  STAGE 2 (Propose): present the spec path you WILL create (e.g. `specs/2026-06-05-jwt-auth.md`). WAIT for user approval. No file yet.
   STAGE 3 (CreateSpec): after Stage 2 approval, write the spec file. It MUST include the 13 sections above. Content in SPANISH. Present spec for approval.
   STAGE 7 (ValidateAndHandoff): re-read the spec against the implementation; update if drift.
 
-BANNED: writing to `docs/superpowers/specs/`, creating folder scaffolds, using `openspec new change`.
-</openspec>
+BANNED: writing to `docs/superpowers/specs/`, creating folder scaffolds.
+</specs>
 
 </project_tools>

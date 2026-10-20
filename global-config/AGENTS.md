@@ -9,6 +9,23 @@
 
 - For frontend design work load `pols-slop` or `design-taste-frontend` for direction, and `impeccable` for refinement. Use `extract-design-system` when starting from an existing site's tokens.
 
+# Code
+
+- Write the smallest complete change that solves the task. No abstraction, option or "for later" code nobody asked for.
+- Prefer the standard library and the dependencies the project already has. Never add one for a few lines.
+- One job per function. Side effects at the edges: not in the middle of a render, a parser or a query builder.
+- Validate at trust boundaries: user input, network, files, money, auth. Never swallow an error or leave a bare `catch` that hides the cause.
+- Leave no dead code, unused export, debug log or commented-out block.
+- The project's existing style is not automatically right. Follow it when it is sound; do not copy known bad patterns for the sake of consistency. If the codebase is poor, write the new code well and say what you did differently.
+- Verify with the project's own tests, build or linter before claiming something works. "It should work" is not a result.
+
+# Documentation
+
+- Markdown: one H1, short sections. No intro that restates the title, no "In this section", no emoji headers, no ornamental dividers.
+- Tables for repeated data. Fenced code blocks with a language tag. Commands must be copy-pasteable.
+- Write decisions, constraints and the why. What the code does is already in the code.
+- READMEs: what it is, how to run it, what it needs. No badge walls, no marketing prose.
+
 # Comments
 
 Code explains itself; a comment is a last resort, never a habit.
