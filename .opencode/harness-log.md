@@ -1,3 +1,27 @@
+### 2026-10-20: Poda del harness — agentes, skills, contexto y disco
+
+**Acción**:
+- **Agentes**: `openagent.md` reescrito de 30,5 KB a 2,5 KB. Conserva el flujo analizar → plan (con confirmación explícita) → ejecutar → validar → resumen, la delegación, la regla de parar en fallo y los denies de seguridad. Elimina: ContextScout obligatorio, aprobación por `bash "*": "ask"`, tiers de prioridad, carga de contexto OAC, protocolo de session bundles y tablas de rutas duplicadas.
+- **opencoder.md**: 30,5 KB → 24,2 KB. Elimina ContextScout, BatchExecutor, `critical_context_requirement` y la plantilla de spec externa. Conserva spec-driven development, stages 1-7, approval gates, `.tmp/sessions` y TaskManager.
+- **Subagentes**: eliminados `core/contextscout.md` y `system-builder/context-organizer.md`; limpiadas todas las referencias a ContextScout y a `.opencode/context/` en los 9 restantes. `task-manager.md` usa ahora `AGENTS.md` como contexto.
+- **Skills**: 42 → 26. Fuera `accessibility`, `best-practices`, `core-web-vitals`, `performance`, `seo`, `find-skills`. Del plugin superpowers se borraron 8 carpetas (`diagnosing-superpowers`, `receiving-code-review`, `verification-before-completion`, `using-git-worktrees`, `requesting-code-review`, `finishing-a-development-branch`, `writing-skills`, `test-driven-development`); `using-superpowers` y las 7 útiles se mantienen.
+- **AGENTS.md**: la carga de `pols-slop` deja de ser obligatoria; queda una línea que remite a `pols-slop`/`design-taste-frontend`/`impeccable`/`extract-design-system`.
+- **Contexto**: eliminado `~/.opencode/context/` completo (171 `.md`, 1,3 MB) y los comandos que lo gestionaban (`add-context`, `context`, `check-context-deps`, `clean`, `optimize`, `analyze-patterns`, `validate-repo`, `command/openagents`).
+- **Metadata**: `config/agent-metadata.json` pasa de 28 entradas (15 fantasma) a las 10 reales.
+- **Disco**: borrados `v2-migration/backup-20261014-130609` (2,8 GB), `rollback-v1` (112 MB) y `backup-2026-10-14`; borradas las tablas V1 de `opencode.db` (448 sesiones duplicadas en V2, 494 MB) + `VACUUM`: 1,33 GB → 615 MB. Eliminados `bin/opencode2`, `~/.opencode/plugins/` y `~/.config/opencode/skills/` (vacíos).
+
+**Por qué**: el prompt fijo por petición era de ~16k tokens, de los que la mitad correspondían a maquinaria sin uso medido (TaskManager 0 invocaciones, ContextScout con 50% de respuestas vacías, 22 skills sin una sola carga). El repo del harness llevaba meses sin reflejar el estado real.
+
+**Archivos**: `~/.opencode/agent/**`, `~/.opencode/{harness-inventory,harness-log,harness-instructions}.md`, `~/.opencode/command/`, `~/.config/opencode/AGENTS.md`, `~/.agents/skills/`, plugin superpowers (caché), `~/.local/share/opencode/opencode.db`.
+
+**Recuperación**: todo el estado previo está en el tag `pre-cleanup-2026-10-20` del repo (`git show pre-cleanup-2026-10-20:ruta`). Las carpetas del plugin superpowers se restauran con `git -C <plugin> checkout -- skills/` o reinstalando el plugin.
+
+**Validado**: recuento de skills y agentes, arranque de OpenCode, sync del repo.
+
+**Pendiente**: definir un contexto global de código (best practices, comentarios sin ruido, separación de dependencias) en `AGENTS.md` o en un documento corto de referencia.
+
+---
+
 ### 2026-10-13: DCP — activar compresión automática en V2
 
 **Acción**: `~/.config/opencode/dcp.jsonc` pasa de solo schema a definir `"compress": { "permission": "allow" }`.

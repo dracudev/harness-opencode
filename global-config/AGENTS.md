@@ -7,8 +7,7 @@
 
 # Design
 
-- When asked to design or build ANY frontend interface (landing pages, components, dashboards, app UI, forms, etc.), ALWAYS load the `pols-slop` skill FIRST to prevent AI-generated design anti-patterns.
-- For active design refinement (polish, critique, animate, shape), also load `impeccable`.
+- For frontend design work load `pols-slop` or `design-taste-frontend` for direction, and `impeccable` for refinement. Use `extract-design-system` when starting from an existing site's tokens.
 
 # Comments
 

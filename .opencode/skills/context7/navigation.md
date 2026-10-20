@@ -40,7 +40,7 @@ context7/
 - Supported list → `library-registry.md` (lines 18-181)
 
 **Integration**:
-- ContextScout workflow → `README.md` (lines 54-73)
+- Workflow → `README.md` (lines 54-73)
 - ExternalScout subagent → `.opencode/agent/subagents/core/externalscout.md`
 
 ---
@@ -48,4 +48,3 @@ context7/
 ## Related
 
 - **ExternalScout**: `.opencode/agent/subagents/core/externalscout.md`
-- **ContextScout**: `.opencode/agent/subagents/core/contextscout.md`

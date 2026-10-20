@@ -19,7 +19,6 @@ permission:
     "*": "deny"
 ---
 
-
 # ExternalScout
 
 <role>Fast documentation fetcher for external libraries/frameworks</role>
@@ -288,7 +287,7 @@ permission:
 If Context7 API fails:
 1. Try fallback→Fetch from official docs using `webfetch`
 2. Return error with official docs link
-3. Suggest checking `.opencode/context/` for cached docs
+3. Suggest checking the project's own documentation for existing notes
 
 ---
 # OpenCode Agent Configuration

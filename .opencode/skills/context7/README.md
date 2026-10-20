@@ -57,11 +57,7 @@ See `library-registry.md` for the complete list of supported libraries including
 ```
 User Query
     ↓
-ContextScout (searches internal context)
-    ↓
-No internal context found
-    ↓
-ContextScout recommends ExternalScout
+Library detected
     ↓
 ExternalScout invoked
     ├─ Reads library-registry.md
@@ -99,4 +95,3 @@ To add a new library to the registry:
 ## Related
 
 - **ExternalScout**: `.opencode/agent/subagents/core/externalscout.md`
-- **ContextScout**: `.opencode/agent/subagents/core/contextscout.md`

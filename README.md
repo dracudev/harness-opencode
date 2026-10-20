@@ -1,104 +1,67 @@
 # Harness OpenCode
 
-Conjunto completo de configuracion, agentes, skills, contexto y plugins del ecosistema OpenCode.
+Configuración, agentes, skills y plugins de mi entorno de OpenCode. Este repositorio es el espejo del harness vivo: `~/.opencode` y `~/.config/opencode`.
+
+Estado: 2026-10-20 · OpenCode 2.1.1.
 
 ## Estructura
 
 ```
 harness-opencode/
-├── .opencode/                    # Harness workspace
-│   ├── agent/                    # Agentes (OpenAgent, OpenCoder, 11 subagentes)
-│   │   ├── open-agent.md         # Agente universal principal
-│   │   ├── open-coder.md         # Agente de desarrollo (7 customizaciones)
-│   │   └── subagents/            # Subagentes especializados
-│   ├── context/                  # Contexto (60+ archivos standards/workflows)
-│   │   └── core/
-│   │       ├── standards/        # code-quality, documentation, test-coverage
-│   │       ├── workflows/        # code-review, task-delegation, openspec
-│   │       └── system/           # Configuracion del sistema
-│   ├── skills/                   # Skills locales
-│   │   ├── impeccable/           # Design guidance con 23 comandos y detector CLI anti-AI-slop
-│   │   ├── context7/             # Documentacion de librerias externas
-│   │   └── task-management/      # Gestion de subtareas (task-cli)
-│   ├── command/                  # Comandos de OpenCode
-│   ├── harness-inventory.md      # Inventario completo del harness
-│   ├── harness-log.md            # Historial de cambios fechados
-│   └── harness-instructions.md   # Reglas de mantenimiento
-├── global-config/                # Config global de OpenCode
-│   ├── opencode.jsonc            # MCPs (engram, codegraph), plugins, providers
-│   ├── dcp.jsonc                 # Dynamic Context Pruning schema
-│   ├── tui.json                  # TUI config (subagent-statusline)
-│   ├── plugins/
-│   │   ├── engram.ts             # Plugin de memoria persistente
-│   │   └── rtk.ts                # Rust Token Killer (compresion de output bash)
-│   └── ponytail/                 # Plugin lazy-senior-dev + 5 skills de auditoria
-└── global-skills/                # 16 skills globales externos
-    ├── odoo-19/                  # Odoo 19 con 18 guias especializadas
-    ├── odoo-task/                # Nombres de tarea estilo Ingeos
-    ├── design-taste-frontend/    # Landing pages y portfolios (anti-slop)
-    ├── caveman/                  # Comunicacion ultra-comprimida
-    ├── humanizer/                # Eliminacion de marcas de IA en texto
-    ├── web-quality-audit/        # Auditoria integral web
-    ├── seo/                      # Optimizacion SEO
-    ├── seo-audit/                # Diagnostico SEO
-    ├── performance/              # Optimizacion de rendimiento web
-    ├── accessibility/            # Auditoria WCAG 2.2
-    ├── best-practices/           # Buenas practicas web modernas
-    ├── core-web-vitals/          # Optimizacion LCP, INP, CLS
-    ├── extract-design-system/    # Extraccion de design tokens
-    ├── find-skills/              # Descubrimiento de skills instalables
-    ├── git-commit/               # Commits con conventional commits
-    ├── pols-slop/                # Ley anti-slop de diseno
-    ├── .agents/                  # Skills con estructura anidada (schema-markup)
-    └── ... (mas skills via plugin superpowers)
+├── .opencode/                     # Workspace
+│   ├── agent/
+│   │   ├── openagent.md           # Agente universal (por defecto)
+│   │   ├── opencoder.md           # Features grandes con specs y approval gates
+│   │   └── subagents/             # 9 subagentes (code, core, development)
+│   ├── skills/                    # Skills locales: context7, impeccable, task-management
+│   ├── command/                   # commit, test
+│   ├── harness-inventory.md       # Inventario del harness
+│   ├── harness-log.md             # Historial de cambios
+│   └── harness-instructions.md    # Reglas de mantenimiento
+├── global-config/
+│   ├── opencode.jsonc             # Provider, MCP, plugins
+│   ├── cli.json                   # TUI y permisos de sesión
+│   ├── dcp.jsonc                  # Dynamic Context Pruning
+│   ├── AGENTS.md                  # Instrucciones globales
+│   └── plugins/                   # engram, dcp-tag-strip, rtk, oac-shim
+└── global-skills/                 # Skills globales (~/.agents/skills)
 ```
 
-## Instalacion
+## Contenido
 
-### Requisitos previos
+**Agentes.** `openagent` es el agente diario: analiza, propone un plan, espera confirmación, ejecuta (delegando si toca 4+ archivos) y valida antes de resumir. `opencoder` está pensado para features grandes: specs, ejecución incremental y gates de aprobación.
 
-- OpenCode >= 1.15.13
-- Engram >= 1.16.1 (para memoria persistente)
-- Codegraph >= 0.9.8 (para navegacion de codigo)
+**Skills.** 26 visibles entre locales, globales, plugin `superpowers` (7) y plugin `ponytail` (5). Las globales cubren Odoo, frontend, SEO y texto; las SEO se eligieron por valoración del repositorio de origen.
 
-### Paso 1: Workspace (.opencode)
+**Contexto.** No hay capa de contexto propia. El agente lee `AGENTS.md` y los archivos del proyecto. El antiguo `~/.opencode/context/` se eliminó por falta de uso.
+
+## Instalación
+
+Requisitos: OpenCode >= 2, Engram y `rtk` en el PATH.
 
 ```bash
+# Workspace
 cp -r harness-opencode/.opencode ~/.opencode
-```
 
-O si ya tenes un workspace, mergea solo lo que necesites:
-
-```bash
-cp -r harness-opencode/.opencode/agent/* ~/.opencode/agent/
-cp -r harness-opencode/.opencode/context/* ~/.opencode/context/
-```
-
-### Paso 2: Config global
-
-```bash
-cp harness-opencode/global-config/opencode.jsonc ~/.config/opencode/opencode.jsonc
-cp harness-opencode/global-config/dcp.jsonc ~/.config/opencode/dcp.jsonc
-cp harness-opencode/global-config/tui.json ~/.config/opencode/tui.json
+# Config global
+cp harness-opencode/global-config/{opencode.jsonc,cli.json,dcp.jsonc,AGENTS.md} ~/.config/opencode/
 cp -r harness-opencode/global-config/plugins/* ~/.config/opencode/plugins/
-```
 
-### Paso 3: Skills globales
-
-```bash
+# Skills globales
 cp -r harness-opencode/global-skills/. ~/.agents/skills/
 ```
 
-### Paso 4: Dependencias de plugins
-
-```bash
-cd ~/.config/opencode && npm install
-```
-
-### Paso 5: Reiniciar OpenCode
-
-Los cambios de configuracion requieren reinicio de OpenCode.
+Los plugins npm (`superpowers`, `opencode-dcp`, `ponytail`) los instala OpenCode a partir de `opencode.jsonc`; hace falta reiniciar tras cambiar la configuración.
 
 ## Mantenimiento
 
-Ver `harness-instructions.md` para las reglas de modificacion del harness.
+Las reglas están en `.opencode/harness-instructions.md`: documentar el cambio, copiarlo al repositorio y commitear.
+
+## Recuperación
+
+El estado previo a la poda de octubre de 2026 está en el tag `pre-cleanup-2026-10-20`:
+
+```bash
+git show pre-cleanup-2026-10-20:.opencode/context/navigation.md
+git checkout pre-cleanup-2026-10-20 -- .opencode/context
+```

@@ -16,7 +16,6 @@ permission:
     "node_modules/**": "deny"
     ".git/**": "deny"
   task:
-    contextscout: "allow"
     externalscout: "allow"
     "*": "deny"
   skill:
@@ -37,11 +36,10 @@ permission:
 
 <critical_context_requirement>
 BEFORE starting task breakdown, ALWAYS:
-  1. Load context: `.opencode/context/core/task-management/navigation.md`
+  1. Read `AGENTS.md` and the project conventions relevant to the task
   2. Check existing tasks: Run `task-cli.ts status` to see current state
   3. If context file is provided in prompt or exists at `.tmp/sessions/{session-id}/context.md`, load it
-  4. If context is missing or unclear, delegate discovery to ContextScout and capture relevant context file paths
-
+  4. If conventions are still unclear, read similar modules in the project
 
 WHY THIS MATTERS:
 - Tasks without project context → Wrong patterns, incompatible approaches
@@ -51,12 +49,10 @@ WHY THIS MATTERS:
     <with_meta_agent>
       - You are STATELESS. Do not assume you know what happened in previous turns.
       - ALWAYS run `task-cli.ts status` before any planning, even if no tasks exist yet.
-      - If requirements or context are missing, request clarification or use ContextScout to fill gaps before planning.
-      - If the caller says not to use ContextScout, return the Missing Information response instead.
+      - If requirements or context are missing, request clarification before planning.
       - Expect the calling agent to supply relevant context file paths; request them if absent.
-      - Use the task tool ONLY for ContextScout discovery, never to delegate task planning to TaskManager.
+      - Never delegate task planning to another agent.
       - Do NOT create session bundles or write `.tmp/sessions/**` files.
-      - Do NOT read `.opencode/context/core/workflows/task-delegation-basics.md` or follow delegation workflows.
       - Your output (JSON files) is your primary communication channel.
     </with_meta_agent>
 
@@ -91,11 +87,7 @@ WHY THIS MATTERS:
             - Check `openspec/changes/` for active work
             - Read relevant specs before planning
 
-         3. Load task management context:
-            - `.opencode/context/core/task-management/navigation.md`
-            - `.opencode/context/core/task-management/standards/task-schema.md`
-            - `.opencode/context/core/task-management/guides/splitting-tasks.md`
-            - `.opencode/context/core/task-management/guides/managing-tasks.md`
+         3. Load the `task-management` skill (`SKILL.md`) for the task schema
 
          4. Check current task state:
            ```bash
@@ -107,15 +99,7 @@ WHY THIS MATTERS:
             - Architecture patterns
             - Technical constraints
 
-         6. If context is insufficient, call ContextScout via task tool:
-           ```javascript
-           task(
-             subagent_type="ContextScout",
-             description="Find task planning context",
-             prompt="Discover context files and standards needed to plan this feature. Return relevant file paths and summaries."
-           )
-           ```
-           Capture the returned context file paths for the task plan.
+         6. If context is insufficient, read `AGENTS.md` and similar modules, then capture the conventions found for the task plan.
       </process>
       <checkpoint>Context loaded, current state understood</checkpoint>
     </stage>
@@ -213,68 +197,14 @@ WHY THIS MATTERS:
                "name": "{Feature Name}",
                "status": "active",
                "objective": "{max 200 chars}",
-               "context_files": ["{standards paths only — from ## Context Files in session context.md}"],
-               "reference_files": ["{source material only — from ## Reference Files in session context.md}"],
-               "exit_criteria": ["{criteria}"],
-               "subtask_count": {N},
-               "completed_count": 0,
-               "created_at": "{ISO timestamp}",
-               "bounded_context": "{optional: from ArchitectureAnalyzer}",
-               "module": "{optional: from ArchitectureAnalyzer}",
-               "vertical_slice": "{optional: from StoryMapper}",
-               "contracts": ["{optional: from ContractManager}"],
-               "design_components": ["{optional: design artifacts}"],
-               "related_adrs": ["{optional: from ADRManager}"],
-               "rice_score": {"{optional: from PrioritizationEngine}"},
-               "wsjf_score": {"{optional: from PrioritizationEngine}"},
-               "release_slice": "{optional: from PrioritizationEngine}"
-             }
-             ```
-
-          3. Create subtask_NN.json for each task:
-              ```json
-              {
-                "id": "{feature}-{seq}",
-                "seq": "{NN}",
-                "title": "{title}",
-                "status": "pending",
-                "depends_on": ["{deps}"],
-                "parallel": {true/false},
-                "suggested_agent": "{agent_id}",
-                "context_files": ["{standards paths relevant to THIS subtask}"],
-                "reference_files": ["{source files relevant to THIS subtask}"],
-                "acceptance_criteria": ["{criteria}"],
-                "deliverables": ["{files/endpoints}"],
-                "bounded_context": "{optional: inherited from task.json or subtask-specific}",
-                "module": "{optional: module this subtask modifies}",
-                "vertical_slice": "{optional: feature slice this subtask belongs to}",
-                "contracts": ["{optional: contracts this subtask implements or depends on}"],
-                "design_components": ["{optional: design artifacts relevant to this subtask}"],
-                "related_adrs": ["{optional: ADRs relevant to this subtask}"]
-              }
-              ```
-  
-              **RULE**: `context_files` = standards/conventions ONLY. `reference_files` = project source files ONLY. Never mix them.
-  
-              **LINE-NUMBER PRECISION** (Enhanced Schema):
-              For large files (>100 lines), use line-number precision to reduce cognitive load:
-              ```json
-              "context_files": [
-                {
-                  "path": ".opencode/context/core/standards/code-quality.md",
-                  "lines": "53-95",
-                  "reason": "Pure function patterns for service layer"
-                },
-                {
-                  "path": ".opencode/context/core/standards/security-patterns.md",
-                  "lines": "120-145,200-220",
-                  "reason": "JWT validation and token refresh patterns"
-                }
+               "context_files": [
+                { "path": "AGENTS.md", "reason": "Global code conventions" },
+                { "path": "<closest analogous module>", "lines": "1-80", "reason": "Pattern to mirror" }
               ]
               ```
               
               **Backward Compatibility**: Both formats are valid:
-              - String format: (example: `".opencode/context/file.md"`) - read entire file
+              - String format: (example: `"AGENTS.md"`) - read entire file
               - Object format: `{"path": "...", "lines": "10-50", "reason": "..."}` (read specific lines)
               
               Agents MUST support both formats. Mix-and-match is allowed in the same array.
@@ -286,10 +216,8 @@ WHY THIS MATTERS:
  
               **FRONTEND RULE**: If a task involves UI design, styling, or frontend implementation:
               1. Set `suggested_agent`: "OpenFrontendSpecialist"
-              2. Include `.opencode/context/ui/web/ui-styling-standards.md` and `.opencode/context/core/workflows/design-iteration-overview.md` in `context_files`.
-              3. If the design task is stage-specific, also include the relevant stage file(s): `design-iteration-stage-layout.md`, `design-iteration-stage-theme.md`, `design-iteration-stage-animation.md`, `design-iteration-stage-implementation.md`.
-              4. Ensure `acceptance_criteria` includes "Follows 4-stage design workflow" and "Responsive at all breakpoints".
-              5. **PARALLELIZATION**: Design tasks can run in parallel (`parallel: true`) since design work is isolated and doesn't affect backend/logic implementation. Only mark `parallel: false` if design depends on backend API contracts or data structures.
+              3. Ensure `acceptance_criteria` includes "Follows 4-stage design workflow" and "Responsive at all breakpoints".
+              4. **PARALLELIZATION**: Design tasks can run in parallel (`parallel: true`) since design work is isolated and doesn't affect backend/logic implementation. Only mark `parallel: false` if design depends on backend API contracts or data structures.
  
          4. Validate with CLI:
            ```bash
@@ -407,16 +335,8 @@ Before any status update or file modification:
     <format>
       ```json
       "context_files": [
-        {
-          "path": ".opencode/context/core/standards/code-quality.md",
-          "lines": "53-95",
-          "reason": "Pure function patterns for service layer"
-        },
-        {
-          "path": ".opencode/context/core/standards/security-patterns.md",
-          "lines": "120-145,200-220",
-          "reason": "JWT validation and token refresh patterns"
-        }
+        { "path": "AGENTS.md", "reason": "Global code conventions" },
+        { "path": "<closest analogous module>", "lines": "1-80", "reason": "Pattern to mirror" }
       ]
       ```
     </format>
@@ -427,7 +347,7 @@ Before any status update or file modification:
     </when_to_use>
     <backward_compatibility>
       Both formats are valid and can be mixed:
-      - String: (example: `".opencode/context/file.md"`) - read entire file
+      - String: (example: `"AGENTS.md"`) - read entire file
       - Object: `{"path": "...", "lines": "10-50", "reason": "..."}` (read specific lines)
     </backward_compatibility>
   </line_number_precision>
@@ -523,16 +443,8 @@ Before any status update or file modification:
       "status": "active",
       "objective": "Implement JWT-based authentication with refresh tokens",
       "context_files": [
-        {
-          "path": ".opencode/context/core/standards/code-quality.md",
-          "lines": "53-95",
-          "reason": "Pure function patterns for auth service"
-        },
-        {
-          "path": ".opencode/context/core/standards/security-patterns.md",
-          "lines": "120-145",
-          "reason": "JWT validation rules"
-        }
+        { "path": "AGENTS.md", "reason": "Global code conventions" },
+        { "path": "<closest analogous module>", "lines": "1-80", "reason": "Pattern to mirror" }
       ],
       "reference_files": ["src/middleware/auth.middleware.ts"],
       "exit_criteria": ["All tests passing", "JWT tokens signed with RS256"],
@@ -587,16 +499,8 @@ Before any status update or file modification:
       "depends_on": ["01"],
       "parallel": false,
       "context_files": [
-        {
-          "path": ".opencode/context/core/standards/code-quality.md",
-          "lines": "53-72",
-          "reason": "Pure function patterns"
-        },
-        {
-          "path": ".opencode/context/core/standards/security-patterns.md",
-          "lines": "120-145",
-          "reason": "JWT signing and validation rules"
-        }
+        { "path": "AGENTS.md", "reason": "Global code conventions" },
+        { "path": "<closest analogous module>", "lines": "1-80", "reason": "Pattern to mirror" }
       ],
       "reference_files": ["src/config/jwt.config.ts"],
       "suggested_agent": "CoderAgent",
@@ -667,7 +571,6 @@ Script location: `.opencode/skills/task-management/scripts/task-cli.ts`
 </validation>
 
   <principles>
-    <context_first>Always load context and check status before planning</context_first>
     <atomic_decomposition>Break features into smallest independently completable units</atomic_decomposition>
     <dependency_aware>Map and enforce task dependencies via depends_on</dependency_aware>
     <parallel_identification>Mark isolated tasks for parallel execution</parallel_identification>

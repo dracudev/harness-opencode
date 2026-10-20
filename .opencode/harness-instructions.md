@@ -21,7 +21,6 @@ El harness vive en `~/harness-opencode/`. Copiar los archivos modificados a su u
 | `~/.config/opencode/opencode.jsonc` | `harness-opencode/global-config/opencode.jsonc` |
 | `~/.config/opencode/plugins/*` | `harness-opencode/global-config/plugins/` |
 | `~/.config/opencode/dcp.jsonc` | `harness-opencode/global-config/dcp.jsonc` |
-| `~/.config/opencode/tui.json` | `harness-opencode/global-config/tui.json` |
 | `~/.agents/skills/*` | `harness-opencode/global-skills/` |
 
 ### 3. Commitear en el repo
@@ -34,17 +33,16 @@ cd ~/harness-opencode && git add -A && git commit -m "descripcion del cambio"
 
 ```
 ~/.opencode/                          # Harness workspace (activo)
-  agent/                              # Agentes (OpenAgent, OpenCoder, subagentes)
-  context/                            # Contexto (60+ archivos de standards/workflows)
-  skills/                             # Skills locales (task-management, context7)
-  command/                            # Comandos de OpenCode
+  agent/                              # Agentes (OpenAgent, OpenCoder, 9 subagentes)
+  skills/                             # Skills locales (context7, impeccable, task-management)
+  command/                            # Comandos de OpenCode (commit, test)
   harness-inventory.md                # Inventario completo
   harness-log.md                      # Historial de cambios
   harness-instructions.md             # Este archivo
 
 ~/harness-opencode/                   # Repositorio git (copia sincronizada)
   .opencode/                          # Espejo de ~/.opencode/
-  global-config/                      # Config global (opencode.jsonc, plugins)
+  global-config/                      # Config global (opencode.jsonc, cli.json, dcp.jsonc, AGENTS.md, plugins)
   global-skills/                      # Skills globales (~/.agents/skills/)
   README.md                           # Documentacion del repo
 ```
