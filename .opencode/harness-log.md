@@ -16,6 +16,8 @@
 
 **Recuperación**: todo el estado previo está en el tag `pre-cleanup-2026-10-20` del repo (`git show pre-cleanup-2026-10-20:ruta`). Las carpetas del plugin superpowers se restauran con `git -C <plugin> checkout -- skills/` o reinstalando el plugin.
 
+**Referencia conservada**: `~/.opencode/standards/code-quality.md` (no se carga automáticamente; pendiente de reescribir sin el dogma JS funcional).
+
 **Validado**: recuento de skills y agentes, arranque de OpenCode, sync del repo.
 
 **Pendiente**: definir un contexto global de código (best practices, comentarios sin ruido, separación de dependencias) en `AGENTS.md` o en un documento corto de referencia.

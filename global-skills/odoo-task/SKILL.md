@@ -1,6 +1,6 @@
 ---
 name: odoo-task
-description: Genera títulos de tarea cortos (máx. 2 líneas) al estilo Ingeos (español de España, formato "Área: cambio A + cambio B") a partir del contexto de la sesión/chat o de los últimos commits. Úsala cuando pidan "redactar una tarea", "generar el nombre/título de la tarea", "task title", "describe estos cambios como tarea", o convertir un chat/commits en un ticket. Pensada para proyectos Odoo/Ingeos.
+description: 'Genera títulos de tarea cortos (máx. 2 líneas) al estilo Ingeos (español de España, formato "Área: cambio A + cambio B") a partir del contexto de la sesión/chat o de los últimos commits. Úsala cuando pidan "redactar una tarea", "generar el nombre/título de la tarea", "task title", "describe estos cambios como tarea", o convertir un chat/commits en un ticket. Pensada para proyectos Odoo/Ingeos.'
 ---
 
 # Odoo task naming (estilo Ingeos)

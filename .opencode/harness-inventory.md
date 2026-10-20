@@ -66,6 +66,8 @@ Criterio de poda: se conserva lo usado al menos una vez más el pack de estilado
 
 No hay capa de contexto propia. El agente lee `AGENTS.md` y los archivos del proyecto. El antiguo `~/.opencode/context/` (171 archivos) se eliminó en octubre de 2026: nunca se usó y buena parte prescribía estándares de otro stack.
 
+Queda `~/.opencode/standards/code-quality.md` como referencia manual, sin carga automática y pendiente de reescritura.
+
 ## 7. Disco
 
 | Ruta | Tamaño |
