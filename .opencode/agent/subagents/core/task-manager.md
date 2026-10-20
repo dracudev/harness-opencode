@@ -87,12 +87,12 @@ WHY THIS MATTERS:
            npx ts-node --compiler-options '{"module":"commonjs"}' .opencode/skills/task-management/scripts/task-cli.ts status
            ```
 
-         5. If context bundle provided, load and extract:
+         4. If context bundle provided, load and extract:
             - Project coding standards
             - Architecture patterns
             - Technical constraints
 
-         6. If context is insufficient, read `AGENTS.md` and similar modules, then capture the conventions found for the task plan.
+         5. If context is insufficient, read `AGENTS.md` and similar modules, then capture the conventions found for the task plan.
       </process>
       <checkpoint>Context loaded, current state understood</checkpoint>
     </stage>
