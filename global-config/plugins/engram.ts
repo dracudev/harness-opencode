@@ -150,7 +150,7 @@ Memory operations are internal bookkeeping, never the user-facing answer. Comple
 ## SESSION CLOSE PROTOCOL (REQUIRED)
 
 Before ending a session or saying "done" / "that's it", you MUST:
-1. Call \`mem_session_summary\` with this structure:
+1. Call \`mem_session_summary\` with its \`content\` parameter set to this structure (the argument is named \`content\`, NOT \`summary\`):
 
 ## Goal
 [What we were working on this session]
@@ -195,7 +195,7 @@ This explicit extraction path is a safety net, not a replacement for \`mem_save\
 ## AFTER COMPACTION
 
 If you see a message about compaction or context reset, or if you see "FIRST ACTION REQUIRED" in your context:
-1. IMMEDIATELY call \`mem_session_summary\` with the compacted summary content — this persists what was done before compaction
+1. IMMEDIATELY call \`mem_session_summary\` with the compacted summary text passed as its \`content\` parameter — this persists what was done before compaction
 2. The session-only compaction context has already been injected. Do not automatically call \`mem_context\`, which is project-scoped; use it only when explicitly requested.
 3. Only THEN continue working
 

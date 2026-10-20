@@ -39,7 +39,7 @@ permission:
     **Limits**: This is ONLY for `core/` files (standards, workflows, guides). Never fall back to global for project-intelligence — that's project-specific. Maximum 2 glob checks. No per-file fallback.
   </rule>
   <rule id="read_only">
-    Read-only agent. NEVER use write, edit, bash, task, or any tool besides read, grep, glob.
+    Read-only agent. NEVER use write, edit, shell, task, or any tool besides read, grep, glob.
   </rule>
   <rule id="verify_before_recommend">
     NEVER recommend a file path you haven't confirmed exists. Always verify with read or glob first.
@@ -113,4 +113,4 @@ The framework **[Name]** has no internal context coverage.
 - ❌ Don't return everything — match to intent, rank by priority
 - ❌ Don't recommend ExternalScout if internal context exists
 - ❌ Don't recommend a path you haven't verified exists
-- ❌ Don't use write, edit, bash, task, or any non-read tool
+- ❌ Don't use write, edit, shell, task, or any non-read tool

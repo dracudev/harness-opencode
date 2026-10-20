@@ -1,6 +1,14 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "default_agent": "core/openagent",
+  "default_agent": "openagent",
+  "providers": {
+    "opencode-go": {
+      "settings": {
+        "headerTimeout": false,
+        "chunkTimeout": false
+      }
+    }
+  },
   "mcp": {
     "engram": {
       "type": "local",

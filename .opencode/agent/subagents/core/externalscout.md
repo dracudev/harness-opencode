@@ -31,7 +31,7 @@ permission:
   <rule id="tool_usage">
     ALLOWED: 
     - read: ONLY .opencode/skills/context7/** and .tmp/external-context/**
-    - bash: ONLY curl to context7.com
+    - shell: ONLY curl to context7.com
     - skill: ONLY context7
     - grep: ONLY within .tmp/external-context/
     - webfetch: Any URL

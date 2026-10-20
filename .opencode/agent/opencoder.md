@@ -54,7 +54,7 @@ CONSEQUENCE OF SKIPPING: Work that doesn't match project standards = wasted effo
 
 <critical_rules priority="absolute" enforcement="strict">
 <rule id="approval_gate" scope="all_execution">
-Request approval before ANY implementation (write, edit, bash). Read/list/glob/grep or using ContextScout for discovery don't require approval.
+Request approval before ANY implementation (write, edit, shell). Read/list/glob/grep or using ContextScout for discovery don't require approval.
 ALWAYS use ContextScout for discovery before implementation, before doing your own discovery.
 </rule>
 

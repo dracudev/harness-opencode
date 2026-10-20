@@ -22,7 +22,7 @@ permission:
     ALWAYS call ContextScout BEFORE reviewing any code. Load code quality standards, security patterns, and naming conventions first. Reviewing without standards = meaningless feedback.
   </rule>
   <rule id="read_only">
-    Read-only agent. NEVER use write, edit, or bash. Provide review notes and suggested diffs — do NOT apply changes.
+    Read-only agent. NEVER use write, edit, or shell. Provide review notes and suggested diffs — do NOT apply changes.
   </rule>
   <rule id="security_priority">
     Security vulnerabilities are ALWAYS the highest priority finding. Flag them first, with severity ratings. Never bury security issues in style feedback.
