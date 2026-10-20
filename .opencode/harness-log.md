@@ -6,6 +6,7 @@
 - `AGENTS.md` (3.993 chars): nueva sección `# Git` con la regla de no commitear ni pushear sin petición explícita, y línea de codegraph condicional dentro de `# Code`.
 - `opencode.jsonc`: clave `plugin` → `plugins` (la primera está marcada `deprecated` en el schema de V2).
 - Codegraph: eliminado el bloque `MANDATORY` de `coder-agent.md` y de `task-manager.md`. Ahora solo se usa si el proyecto tiene `.codegraph/` y el MCP está activo. El MCP sigue desactivado globalmente.
+- Cache: borrado `~/.cache/opencode/packages/opencode-subagent-statusline@latest` (135 MB). Solo lo referenciaba `tui.json.v1-disabled`, que V2 no carga.
 
 **Por qué**: los comandos no se invocaron nunca en 498 sesiones y contradecían al agente. Codegraph estaba exigido como obligatorio con el MCP apagado, así que la instrucción no se podía cumplir; solo 1 de 20 proyectos tiene índice (`glitch-app`, 6 MB).
 
