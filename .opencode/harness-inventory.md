@@ -61,6 +61,7 @@ Ninguno. El directorio `command/` se eliminó en octubre de 2026: no había una 
 | `engram` | Activo (memoria persistente, ~23 MB en `~/.engram`) |
 | `codegraph` | Desactivado. Solo se usa si el proyecto tiene `.codegraph/` y se activa el MCP (`glitch-app` es el único indexado) |
 | `playwright` | Desactivado |
+| `chrome-devtools` | Desactivado. Chrome real vía CDP: consola, red, traces de performance y Lighthouse. Alternativa a Playwright, nunca los dos activos a la vez |
 
 ## 6. Contexto
 
