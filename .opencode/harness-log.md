@@ -1,3 +1,18 @@
+### 2026-10-20 (tercera iteración): comandos fuera, reglas de commit y codegraph
+
+**Acción**:
+- Eliminado `~/.opencode/command/` completo (`commit.md`, `test.md`). No queda ningún slash command: duplicaban la skill `git-commit` y un pipeline pnpm que no aplica a Odoo, Laravel ni WordPress.
+- `git-commit` reescrito (37 líneas): solo se ejecuta si el usuario lo pide en ese mensaje, mensaje `<type>(<scope>): <summary>` en inglés, imperativo, una línea (segunda solo si el porqué no se ve en el diff), sin emoji ni footers.
+- `AGENTS.md` (3.993 chars): nueva sección `# Git` con la regla de no commitear ni pushear sin petición explícita, y línea de codegraph condicional dentro de `# Code`.
+- `opencode.jsonc`: clave `plugin` → `plugins` (la primera está marcada `deprecated` en el schema de V2).
+- Codegraph: eliminado el bloque `MANDATORY` de `coder-agent.md` y de `task-manager.md`. Ahora solo se usa si el proyecto tiene `.codegraph/` y el MCP está activo. El MCP sigue desactivado globalmente.
+
+**Por qué**: los comandos no se invocaron nunca en 498 sesiones y contradecían al agente. Codegraph estaba exigido como obligatorio con el MCP apagado, así que la instrucción no se podía cumplir; solo 1 de 20 proyectos tiene índice (`glitch-app`, 6 MB).
+
+**Validado**: `opencode reload` OK; `opencode mcp list` (engram connected, codegraph/playwright disabled); con `plugins` siguen cargando superpowers, ponytail y dcp.
+
+---
+
 ### 2026-10-20: Poda del harness — agentes, skills, contexto y disco
 
 **Acción**:

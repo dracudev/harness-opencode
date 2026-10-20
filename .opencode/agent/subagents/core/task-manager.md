@@ -73,26 +73,19 @@ WHY THIS MATTERS:
     <stage id="0" name="ContextLoading">
       <action>Load context and check current task state</action>
       <process>
-         1. **Initialize Codegraph** (MANDATORY):
-            - Check if `.codegraph/codegraph.db` exists in project root
-            - If NOT exists: Run `codegraph init` in project root
-            - Use `codegraph_context` to understand project architecture
-            - Use `codegraph_files` to explore project structure
-            - FALLBACK to grep/glob ONLY if Codegraph fails
+         1. Load the `task-management` skill (`SKILL.md`) for the task schema
 
-         2. Load the `task-management` skill (`SKILL.md`) for the task schema
-
-         3. Check current task state:
+         2. Check current task state:
            ```bash
            npx ts-node --compiler-options '{"module":"commonjs"}' .opencode/skills/task-management/scripts/task-cli.ts status
            ```
 
-         4. If context bundle provided, load and extract:
+         3. If context bundle provided, load and extract:
             - Project coding standards
             - Architecture patterns
             - Technical constraints
 
-         5. If context is insufficient, read `AGENTS.md` and similar modules, then capture the conventions found for the task plan.
+         4. If context is insufficient, read `AGENTS.md` and similar modules, then capture the conventions found for the task plan.
       </process>
       <checkpoint>Context loaded, current state understood</checkpoint>
     </stage>

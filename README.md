@@ -14,7 +14,6 @@ harness-opencode/
 │   │   ├── opencoder.md           # Features grandes con specs y approval gates
 │   │   └── subagents/             # 9 subagentes (code, core, development)
 │   ├── skills/                    # Skills locales: context7, impeccable, task-management
-│   ├── command/                   # commit, test
 │   ├── harness-inventory.md       # Inventario del harness
 │   ├── harness-log.md             # Historial de cambios
 │   └── harness-instructions.md    # Reglas de mantenimiento

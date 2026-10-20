@@ -35,7 +35,6 @@ cd ~/harness-opencode && git add -A && git commit -m "descripcion del cambio"
 ~/.opencode/                          # Harness workspace (activo)
   agent/                              # Agentes (OpenAgent, OpenCoder, 9 subagentes)
   skills/                             # Skills locales (context7, impeccable, task-management)
-  command/                            # Comandos de OpenCode (commit, test)
   harness-inventory.md                # Inventario completo
   harness-log.md                      # Historial de cambios
   harness-instructions.md             # Este archivo

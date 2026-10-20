@@ -7,7 +7,7 @@ Estado: 2026-10-20 · OpenCode 2.1.1 · espejo en `~/harness-opencode` (tag `pre
 | Elemento | Ruta |
 |---|---|
 | Binario | `~/.opencode/bin/opencode` (v2.1.1, en PATH) |
-| Config global | `~/.config/opencode/{opencode.jsonc,cli.json,dcp.jsonc,AGENTS.md}` |
+| Config global | `~/.config/opencode/{opencode.jsonc,cli.json,dcp.jsonc,AGENTS.md}` (3.993 chars de reglas) |
 | Plugins locales | `~/.config/opencode/plugins/{engram.ts,dcp-tag-strip.ts,rtk.ts,oac-shim/}` |
 | Workspace | `~/.opencode/` |
 
@@ -52,21 +52,21 @@ Criterio de poda: se conserva lo usado al menos una vez más el pack de estilado
 
 ## 4. Comandos
 
-`commit.md`, `test.md`.
+Ninguno. El directorio `command/` se eliminó en octubre de 2026: no había una sola invocación y duplicaba la skill `git-commit`.
 
 ## 5. MCP
 
 | Servidor | Estado |
 |---|---|
 | `engram` | Activo (memoria persistente, ~23 MB en `~/.engram`) |
-| `codegraph` | Desactivado |
+| `codegraph` | Desactivado. Solo se usa si el proyecto tiene `.codegraph/` y se activa el MCP (`glitch-app` es el único indexado) |
 | `playwright` | Desactivado |
 
 ## 6. Contexto
 
 No hay capa de contexto propia. El agente lee `AGENTS.md` y los archivos del proyecto. El antiguo `~/.opencode/context/` (171 archivos) se eliminó en octubre de 2026: nunca se usó y buena parte prescribía estándares de otro stack.
 
-Queda `~/.opencode/standards/code-quality.md` como referencia manual, sin carga automática y pendiente de reescritura.
+Las reglas de código, documentación, comentarios y git viven en `AGENTS.md`.
 
 ## 7. Disco
 
@@ -76,6 +76,7 @@ Queda `~/.opencode/standards/code-quality.md` como referencia manual, sin carga 
 | `~/.local/share/opencode/snapshot` | 983 MB |
 | `~/.local/share/opencode/storage` | 35 MB |
 | `~/.opencode/v2-migration` | 192 KB (solo notas) |
+| Caché de paquetes | 314 MB (statusline 135 MB sin usar, `@tarquinen` 178 MB) |
 
 ## 8. Mantenimiento
 

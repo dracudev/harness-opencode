@@ -78,24 +78,12 @@ Look for `specs/YYYY-MM-DD-<slug>.md` in the project root.
 
 ---
 
-## 🔍 Codegraph — Structural Understanding
+## 🔍 Codegraph — Optional Structural Index
 
-**ALWAYS use Codegraph for project discovery.** This is how you understand the codebase structure, find relevant files, and analyze dependencies.
+Use it only when the project has a `.codegraph/` directory and the codegraph MCP is enabled. Otherwise use grep and glob.
 
-### When to Use Codegraph
-
-- **Before editing any file** — run `codegraph_impact` to understand affected code paths
-- **When searching for symbols** — use `codegraph_search` instead of grep
-- **When exploring architecture** — use `codegraph_context` for comprehensive understanding
-
-### How to Use
-
-1. Check if `.codegraph/codegraph.db` exists in project root
-2. If NOT exists: Run `codegraph init` in project root
-3. Use `codegraph_files` to explore structure
-4. Use `codegraph_context` for architecture questions
-5. Use `codegraph_impact` before refactoring
-6. FALLBACK to grep/glob ONLY if Codegraph fails
+- `codegraph_search` for symbols, `codegraph_context` for architecture, `codegraph_impact` before refactoring.
+- Never run `codegraph init` on your own; indexing a project is the user's call.
 
 ---
 # OpenCode Agent Configuration

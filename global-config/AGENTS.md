@@ -18,6 +18,15 @@
 - Leave no dead code, unused export, debug log or commented-out block.
 - The project's existing style is not automatically right. Follow it when it is sound; do not copy known bad patterns for the sake of consistency. If the codebase is poor, write the new code well and say what you did differently.
 - Verify with the project's own tests, build or linter before claiming something works. "It should work" is not a result.
+- If a project has a `.codegraph/` directory and the codegraph MCP is active, use it for structural queries. Never run `codegraph init` unless asked.
+
+# Git
+
+- Never commit, push, create a branch or stash unless the user asks for it in that message.
+- When asked: `<type>(<scope>): <summary>` in English, imperative, one line. A second line only when the why is not obvious from the diff.
+- No emoji, no body, no footers, no `Co-Authored-By`, no "generated with" lines.
+- Stage only the files that belong to the change.
+- Never `--no-verify`, never force push, never rewrite published history.
 
 # Documentation
 
