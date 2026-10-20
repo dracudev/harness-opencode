@@ -443,20 +443,3 @@ Registro de cambios al harness de OpenCode. Cada entrada documenta que se modifi
 **Faltantes**: `planning/`, `test/`, `utils/`.
 
 Nota: `test-engineer.md` local esta en `code/` en lugar de `test/`.
-
----
-
-## 2026-10-20 (segunda iteración)
-
-**Motivo**: Eliminar la última capa de contexto y las dependencias muertas del agente OpenCoder; mover las reglas de código a `AGENTS.md`.
-
-**Cambios**:
-- Borrado `.opencode/standards/code-quality.md` (dogma JS funcional, 164 líneas, se cargaba en trabajo Odoo).
-- `AGENTS.md`: nuevas secciones `# Code` y `# Documentation` (cambio mínimo, stdlib primero, validación en bordes, sin código muerto, verificación real; markdown sin relleno ni adornos). Se conserva `# Comments`.
-- `opencoder.md`: fuera toda referencia a OpenSpec y al CLI (`openspec init`, `openspec new change`, `project.md`). Los specs pasan a `specs/YYYY-MM-DD-<slug>.md`, mismo formato de 13 secciones y mismos gates de aprobación. 30.495 → 23.519 chars.
-- Borrado el plugin cacheado `opencode-plugin-openspec@latest` (58 MB, nunca estuvo en la config).
-- `.gitignore`: `global-config/ponytail/` (14 MB de plugin instalado por el gestor, no fuente propia).
-
-**Estado**: `grep -i openspec` en agentes y subagentes devuelve 0 resultados.
-
-**Pendiente**: clave `plugin` → `plugins` en `opencode.jsonc` (la actual está deprecada en el schema V2); deduplicar `command/commit.md` y `command/test.md`; `@opencode-ai/plugin` en `.opencode/package.json` sin ningún import; caches `opencode-subagent-statusline` (135 MB) y `@tarquinen` (178 MB).

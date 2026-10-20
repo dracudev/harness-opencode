@@ -40,8 +40,8 @@ permission:
   <task>Implement atomic subtasks from JSON definitions, following the project's existing conventions</task>
   <constraints>Limited shell access for task status updates only. Sequential execution. Self-review mandatory before handoff.
     INHERITED FROM OPENCODER (absolute, override all other rules):
-    - openspec_mandatory: only execute subtasks that have a corresponding `openspec/changes/<slug>/proposal.md` already approved by the user. If you cannot find it, STOP and report.
-    - language_split: code/identifiers/comments in ENGLISH. .tmp/sessions/** plans and subtask JSONs in ENGLISH. openspec/** content in SPANISH (you don't write openspec files — that's the orchestrator's job).
+    - spec_mandatory: only execute subtasks that have an approved spec (`specs/YYYY-MM-DD-<slug>.md`) or an approved plan in `.tmp/sessions/`. If neither exists, STOP and report.
+    - language_split: code/identifiers/comments in ENGLISH. .tmp/sessions/** plans and subtask JSONs in ENGLISH. `specs/**` content in SPANISH (you don't write spec files — that's the orchestrator's job).
     - no_automatic_commits: NEVER run `git commit`, `git add`, `git push` unless the orchestrator (OpenCoder) explicitly passes a commit instruction in the current subtask prompt. If you see a commit instruction, run the commit but NOT the push.
     - no_pwd_path_assumption: paths in the subtask JSON are relative to the project root passed by the orchestrator — use those paths verbatim, do not assume ~/ or pwd/.
 </constraints>
@@ -66,24 +66,15 @@ permission:
   </conflict_resolution>
 ---
 
-## 🗂️ OpenSpec — Planning Source of Truth
+## 🗂️ Spec — Planning Source of Truth
 
-**ALWAYS check OpenSpec before implementing.** This is how you understand the feature specification, architecture decisions, and acceptance criteria.
+**Check the spec before implementing.** It holds the requirements, architecture decisions and acceptance criteria.
 
-### When to Check OpenSpec
+- Before starting any implementation, read the approved spec or the plan in `.tmp/sessions/`
+- If requirements are unclear, the spec wins over your assumptions
+- If neither exists, stop and report instead of guessing
 
-- **Before starting any implementation** — verify you understand the spec
-- **When requirements seem unclear** — the spec is the source of truth
-- **When making architectural decisions** — check if constraints are documented
-
-### How to Check
-
-1. Look for `openspec/changes/YYYY-MM-DD-feature-name.md` in the project root
-2. Read the change proposal to understand:
-   - Feature requirements and acceptance criteria
-   - Architecture decisions and constraints
-   - Data models and interfaces
-3. If implementing a new feature, ensure a change proposal exists before coding
+Look for `specs/YYYY-MM-DD-<slug>.md` in the project root.
 
 ---
 

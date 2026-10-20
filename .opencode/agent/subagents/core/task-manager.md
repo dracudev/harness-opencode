@@ -80,16 +80,9 @@ WHY THIS MATTERS:
             - Use `codegraph_files` to explore project structure
             - FALLBACK to grep/glob ONLY if Codegraph fails
 
-         2. **Initialize OpenSpec** (MANDATORY):
-            - Check if `openspec/` directory exists in project root
-            - If NOT exists: Create `openspec/config.yaml` and `openspec/changes/` directory
-            - Read `openspec/project.md` if present
-            - Check `openspec/changes/` for active work
-            - Read relevant specs before planning
+         2. Load the `task-management` skill (`SKILL.md`) for the task schema
 
-         3. Load the `task-management` skill (`SKILL.md`) for the task schema
-
-         4. Check current task state:
+         3. Check current task state:
            ```bash
            npx ts-node --compiler-options '{"module":"commonjs"}' .opencode/skills/task-management/scripts/task-cli.ts status
            ```
